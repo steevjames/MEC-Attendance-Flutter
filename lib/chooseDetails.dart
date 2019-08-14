@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChooseDetails extends StatefulWidget {
   @override
@@ -60,10 +61,10 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                       TextFormField(
                         validator: (String value) {
                           final n = num.tryParse(value);
-                          if (n == null || n<0) {
+                          if (n == null || n < 0) {
                             return 'Input is not a valid Roll Number';
                           }
-                          _rollno=n;
+                          _rollno = n;
                           return null;
                         },
                         // onChanged: (String val) {
@@ -84,13 +85,20 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                           if (!_formKey.currentState.validate()) {
                             return;
                           }
-                          print('\n\nClass Number: ' +
-                              _radioValue.toString() +
-                              '\nSemester : ' +
-                              _radioValue2.toString() +
-                              '\nRoll No : ' +
-                              _rollno.toString() +
-                              '\n\n');
+
+                          var cls = makeClassString();
+
+                          // Saves Details when called.
+                          saveDetails() async {
+                            SharedPreferences pref =
+                                await SharedPreferences.getInstance();
+                            pref.setString('class', cls);
+                            pref.setString('rollno', _rollno.toString());
+                            // print('Final Class Name :' + cls);
+                            Navigator.pushNamed(context, '/attendance');
+                          }
+
+                          saveDetails();
                         },
                       )
                     ],
@@ -226,5 +234,35 @@ class _ChooseDetailsState extends State<ChooseDetails> {
         ],
       ),
     );
+  }
+
+  makeClassString() {
+    var cls = '';
+
+    if (_radioValue.toString() == '0' || _radioValue.toString() == '1') {
+      cls = cls + 'C';
+      cls = cls + _radioValue2.toString();
+      if (_radioValue.toString() == '0')
+        cls = cls + 'A';
+      else
+        cls = cls + 'B';
+    }
+    if (_radioValue.toString() == '3' || _radioValue.toString() == '4') {
+      cls = cls + 'E';
+      cls = cls + _radioValue2.toString();
+      if (_radioValue.toString() == '3')
+        cls = cls + 'A';
+      else
+        cls = cls + 'B';
+    }
+
+    if (_radioValue.toString() == '2') {
+      cls = 'EE' + _radioValue2.toString();
+    }
+
+    if (_radioValue.toString() == '5') {
+      cls = 'B' + _radioValue2.toString();
+    }
+    return cls;
   }
 }

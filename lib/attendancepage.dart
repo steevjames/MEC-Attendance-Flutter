@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import './createList.dart';
 import 'package:beautifulsoup/beautifulsoup.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+var cached = 0;
 
 class MyHomePage extends StatefulWidget {
   MyHomePage();
@@ -65,9 +68,22 @@ class _MyHomePageState extends State<MyHomePage> {
           .get('http://attendance.mec.ac.in/view4stud.php?class=' + classname);
       var soup = Beautifulsoup(response.body.toString());
       convertData(soup);
+      print('Web Data ...');
     }
 
-    getData();
+    getDetailsFromStorage() async {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      classname = pref.getString('class');
+      var rollno2 = pref.getString('rollno');
+      rollno = int.parse(rollno2);
+      print('Storage Data...');
+      getData();
+    }
+
+    if (cached == 0) {
+    cached=1;
+    getDetailsFromStorage();
+    }
 
     return Scaffold(
         appBar: AppBar(
@@ -80,7 +96,12 @@ class _MyHomePageState extends State<MyHomePage> {
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[SizedBox(height: 10.0,)]+mainElement,
+            children: <Widget>[
+                  SizedBox(
+                    height: 10.0,
+                  )
+                ] +
+                mainElement,
           ),
         ));
   }
