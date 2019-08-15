@@ -4,8 +4,6 @@ import 'package:beautifulsoup/beautifulsoup.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-var cached = 0;
-
 class MyHomePage extends StatefulWidget {
   MyHomePage();
 
@@ -14,8 +12,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var rollno = 56;
-  var classname = 'C5A';
+  var cached = 0;
+  var rollno = 0;
+  var classname = '';
   var studname = "Attendance";
 
   var mainElement = <Widget>[
@@ -28,8 +27,13 @@ class _MyHomePageState extends State<MyHomePage> {
     // 1st Argument : Table, 2nd Argument : Required Row
     getTableRow(tablelist, row) {
       var tablelistdoc = Beautifulsoup(tablelist);
-      var tablerows =
-          tablelistdoc.find_all("tr").map((e) => (e.outerHtml)).toList()[row];
+      var tablerows2 =
+          tablelistdoc.find_all("tr").map((e) => (e.outerHtml)).toList();
+      var tablerows = '';
+      if (tablerows2.length > row)
+        tablerows = tablerows2[row];
+      else
+        tablerows = '';
       var tabledoc = Beautifulsoup(tablerows).get_text();
       var tabledoclist = tabledoc.split('\n');
       for (int i = 0; i < tabledoclist.length; i++)
@@ -43,19 +47,28 @@ class _MyHomePageState extends State<MyHomePage> {
     convertData(soup) {
       var tablelist = soup.find_all("table").map((e) => (e.outerHtml)).toList();
       studentattendance = getTableRow(tablelist[0], rollno + 1);
-      studentattendance.removeAt(0);
+      // print(studentattendance);
+      if (studentattendance.length != 0) studentattendance.removeAt(0);
       var noOfSubjects = studentattendance.length;
       var subjectAndLastUpdated = [];
       for (int i = 0; i < noOfSubjects; i++) {
         subjectAndLastUpdated.add(getTableRow(tablelist[1], i));
       }
-      subjectAndLastUpdated.removeAt(0);
+      if (subjectAndLastUpdated.length != 0) subjectAndLastUpdated.removeAt(0);
 
       setState(() {
         mainElement = <Widget>[];
-        mainElement = returnsList(studentattendance, subjectAndLastUpdated,
-            noOfSubjects - 1, context);
-        studname = studentattendance[0];
+        mainElement = returnsList(
+            studentattendance, subjectAndLastUpdated, noOfSubjects, context);
+        if (studentattendance.length != 0)
+          studname = studentattendance[0];
+        else
+          mainElement = <Widget>[
+            Container(
+              padding: EdgeInsets.all(20.0),
+              alignment: Alignment.center,
+                child: Text('Student with current details caanot be found'))
+          ];
       });
 
       // print(studentattendance);
@@ -81,8 +94,8 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     if (cached == 0) {
-    cached=1;
-    getDetailsFromStorage();
+      cached = 1;
+      getDetailsFromStorage();
     }
 
     return Scaffold(

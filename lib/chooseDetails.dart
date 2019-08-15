@@ -31,21 +31,16 @@ class _ChooseDetailsState extends State<ChooseDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('MEC Attendance'),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-      ),
+      // appBar: AppBar(
+      //   title: Text('MEC Attendance(Early Stage)'),
+      //   centerTitle: true,
+      //   backgroundColor: Colors.blue,
+      // ),
       body: Container(
           alignment: Alignment.center,
           child: ListView(
             padding: const EdgeInsets.all(25.0),
             children: <Widget>[
-              Image.asset(
-                'assets/mec.png',
-                height: 150.0,
-                width: 150.0,
-              ),
               Container(
                 margin: const EdgeInsets.all(3.0),
                 alignment: Alignment.center,
@@ -53,34 +48,51 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                   key: _formKey,
                   child: Column(
                     children: <Widget>[
-                      Padding(padding: EdgeInsets.all(5.0)),
+                      Image.asset(
+                        'assets/mec.png',
+                        height: 150.0,
+                        // width: 200.0,
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
                       Text('Choose Class :'),
                       _selectClass(),
                       Text('Choose Semester : '),
                       _selectSemester(),
-                      TextFormField(
-                        validator: (String value) {
-                          final n = num.tryParse(value);
-                          if (n == null || n < 0) {
-                            return 'Input is not a valid Roll Number';
-                          }
-                          _rollno = n;
-                          return null;
-                        },
-                        // onChanged: (String val) {
-                        //   _rollno = int.parse(val);
-                        // },
-                        // controller: _inputControl,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          // labelText: 'Roll No',
-                          hintText: 'Roll No.',
-                          icon: Icon(Icons.event),
+                      SizedBox(
+                        height: 15.0,
+                      ),
+                      Container(
+                        width: 220.0,
+                        child: TextFormField(
+                          maxLength: 2,
+                          validator: (String value) {
+                            final n = num.tryParse(value);
+                            if (n == null || n < 0) {
+                              return 'Input is not a valid Roll Number';
+                            }
+                            _rollno = n;
+                            return null;
+                          },
+                          // onChanged: (String val) {
+                          //   _rollno = int.parse(val);
+                          // },
+                          // controller: _inputControl,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            // labelText: 'Roll No',
+                            hintText: 'Roll No.',
+                            icon: Icon(Icons.event),
+                          ),
                         ),
                       ),
-                      Padding(padding: EdgeInsets.all(15.0)),
+                      SizedBox(
+                        height: 10.0,
+                      ),
                       RaisedButton(
-                        child: Text('Submit'),
+                        color: Colors.blue,
+                        child: Text('SUBMIT', style: TextStyle(color: Colors.white),),
                         onPressed: () {
                           if (!_formKey.currentState.validate()) {
                             return;
@@ -112,13 +124,15 @@ class _ChooseDetailsState extends State<ChooseDetails> {
 
   Widget _selectClass() {
     return Container(
-      // decoration: BoxDecoration(color: Colors.red),
-      alignment: Alignment.center,
-      width: double.infinity,
+      margin: EdgeInsets.all(5.0),
+      decoration: BoxDecoration(
+        border: Border.all(width: 0.5, color: Colors.blue),
+        borderRadius: BorderRadius.circular(20.0),
+      ),
       child: Column(
-        // crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Radio(
                 value: 0,
@@ -141,6 +155,7 @@ class _ChooseDetailsState extends State<ChooseDetails> {
             ],
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Radio(
                 value: 3,
@@ -169,13 +184,18 @@ class _ChooseDetailsState extends State<ChooseDetails> {
 
   Widget _selectSemester() {
     return Container(
-      // decoration: BoxDecoration(color: Colors.red),
+      margin: EdgeInsets.all(5.0),
+      decoration: BoxDecoration(
+        border: Border.all(width: 0.5, color: Colors.blue),
+        borderRadius: BorderRadius.circular(20.0),
+      ),
       alignment: Alignment.center,
       width: double.infinity,
       child: Column(
         // crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Radio(
                 value: 1,
@@ -204,6 +224,7 @@ class _ChooseDetailsState extends State<ChooseDetails> {
             ],
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Radio(
                 value: 5,
