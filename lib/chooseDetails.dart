@@ -50,69 +50,95 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                     children: <Widget>[
                       Image.asset(
                         'assets/mec.png',
-                        height: 150.0,
+                        height: 130.0,
                         // width: 200.0,
                       ),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      Text('Choose Class :'),
-                      _selectClass(),
-                      Text('Choose Semester : '),
-                      _selectSemester(),
-                      SizedBox(
-                        height: 15.0,
-                      ),
                       Container(
-                        width: 220.0,
-                        child: TextFormField(
-                          maxLength: 2,
-                          validator: (String value) {
-                            final n = num.tryParse(value);
-                            if (n == null || n < 0) {
-                              return 'Input is not a valid Roll Number';
-                            }
-                            _rollno = n;
-                            return null;
-                          },
-                          // onChanged: (String val) {
-                          //   _rollno = int.parse(val);
-                          // },
-                          // controller: _inputControl,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            // labelText: 'Roll No',
-                            hintText: 'Roll No.',
-                            icon: Icon(Icons.event),
-                          ),
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 1.5, color: Colors.blue),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            Text(
+                              'Choose Class :',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            _selectClass(),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            Text(
+                              'Choose Semester : ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            _selectSemester(),
+                            SizedBox(
+                              height: 15.0,
+                            ),
+                            Container(
+                              width: 220.0,
+                              margin: EdgeInsets.only(bottom: 20.0),
+                              child: TextFormField(
+                                maxLength: 2,
+                                validator: (String value) {
+                                  final n = num.tryParse(value);
+                                  if (n == null || n < 0) {
+                                    return 'Input is not a valid Roll Number';
+                                  }
+                                  _rollno = n;
+                                  return null;
+                                },
+                                // onChanged: (String val) {
+                                //   _rollno = int.parse(val);
+                                // },
+                                // controller: _inputControl,
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  // labelText: 'Roll No',
+                                  hintText: 'Roll No.',
+                                  icon: Icon(Icons.event),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(
-                        height: 10.0,
+                      Transform.translate(
+                        offset: Offset(0.0, -25.0),
+                        child: RaisedButton(
+                          padding: EdgeInsets.symmetric(horizontal: 30.0),
+                          color: Colors.blue,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(0.0)),
+                          child: Text(
+                            'SUBMIT',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onPressed: () {
+                            if (!_formKey.currentState.validate()) {
+                              return;
+                            }
+                            var cls = makeClassString();
+
+                            // Saves Details when called.
+                            saveDetails() async {
+                              SharedPreferences pref =
+                                  await SharedPreferences.getInstance();
+                              pref.setString('class', cls);
+                              pref.setString('rollno', _rollno.toString());
+                              // print('Final Class Name :' + cls);
+                              Navigator.pushReplacementNamed(
+                                  context, '/attendance');
+                            }
+
+                            saveDetails();
+                          },
+                        ),
                       ),
-                      RaisedButton(
-                        color: Colors.blue,
-                        child: Text('SUBMIT', style: TextStyle(color: Colors.white),),
-                        onPressed: () {
-                          if (!_formKey.currentState.validate()) {
-                            return;
-                          }
-
-                          var cls = makeClassString();
-
-                          // Saves Details when called.
-                          saveDetails() async {
-                            SharedPreferences pref =
-                                await SharedPreferences.getInstance();
-                            pref.setString('class', cls);
-                            pref.setString('rollno', _rollno.toString());
-                            // print('Final Class Name :' + cls);
-                            Navigator.pushNamed(context, '/attendance');
-                          }
-
-                          saveDetails();
-                        },
-                      )
                     ],
                   ),
                 ),
@@ -125,10 +151,6 @@ class _ChooseDetailsState extends State<ChooseDetails> {
   Widget _selectClass() {
     return Container(
       margin: EdgeInsets.all(5.0),
-      decoration: BoxDecoration(
-        border: Border.all(width: 0.5, color: Colors.blue),
-        borderRadius: BorderRadius.circular(20.0),
-      ),
       child: Column(
         children: <Widget>[
           Row(
@@ -185,14 +207,9 @@ class _ChooseDetailsState extends State<ChooseDetails> {
   Widget _selectSemester() {
     return Container(
       margin: EdgeInsets.all(5.0),
-      decoration: BoxDecoration(
-        border: Border.all(width: 0.5, color: Colors.blue),
-        borderRadius: BorderRadius.circular(20.0),
-      ),
       alignment: Alignment.center,
       width: double.infinity,
       child: Column(
-        // crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
