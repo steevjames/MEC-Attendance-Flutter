@@ -31,11 +31,6 @@ class _ChooseDetailsState extends State<ChooseDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('MEC Attendance(Early Stage)'),
-      //   centerTitle: true,
-      //   backgroundColor: Colors.blue,
-      // ),
       body: Container(
           alignment: Alignment.center,
           child: ListView(
@@ -54,10 +49,6 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                         // width: 200.0,
                       ),
                       Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 1.5, color: Colors.blue),
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
                         child: Column(
                           children: <Widget>[
                             SizedBox(
@@ -67,7 +58,10 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                               'Choose Class :',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            _selectClass(),
+                            Transform.scale(
+                              scale: 1,
+                              child: _selectClass(),
+                            ),
                             SizedBox(
                               height: 20.0,
                             ),
@@ -75,13 +69,15 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                               'Choose Semester : ',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            _selectSemester(),
+                                                        Transform.scale(
+                              scale: 1,
+                              child: _selectSemester(),
+                            ),
                             SizedBox(
                               height: 15.0,
                             ),
                             Container(
                               width: 220.0,
-                              margin: EdgeInsets.only(bottom: 20.0),
                               child: TextFormField(
                                 maxLength: 2,
                                 validator: (String value) {
@@ -107,37 +103,34 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                           ],
                         ),
                       ),
-                      Transform.translate(
-                        offset: Offset(0.0, -25.0),
-                        child: RaisedButton(
-                          padding: EdgeInsets.symmetric(horizontal: 30.0),
-                          color: Colors.blue,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(0.0)),
-                          child: Text(
-                            'SUBMIT',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          onPressed: () {
-                            if (!_formKey.currentState.validate()) {
-                              return;
-                            }
-                            var cls = makeClassString();
-
-                            // Saves Details when called.
-                            saveDetails() async {
-                              SharedPreferences pref =
-                                  await SharedPreferences.getInstance();
-                              pref.setString('class', cls);
-                              pref.setString('rollno', _rollno.toString());
-                              // print('Final Class Name :' + cls);
-                              Navigator.pushReplacementNamed(
-                                  context, '/attendance');
-                            }
-
-                            saveDetails();
-                          },
+                      RaisedButton(
+                        padding: EdgeInsets.symmetric(horizontal: 30.0),
+                        color: Colors.blue,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(15.0)),
+                        child: Text(
+                          'SUBMIT',
+                          style: TextStyle(color: Colors.white),
                         ),
+                        onPressed: () {
+                          if (!_formKey.currentState.validate()) {
+                            return;
+                          }
+                          var cls = makeClassString();
+
+                          // Saves Details when called.
+                          saveDetails() async {
+                            SharedPreferences pref =
+                                await SharedPreferences.getInstance();
+                            pref.setString('class', cls);
+                            pref.setString('rollno', _rollno.toString());
+                            // print('Final Class Name :' + cls);
+                            Navigator.pushReplacementNamed(
+                                context, '/attendance');
+                          }
+
+                          saveDetails();
+                        },
                       ),
                     ],
                   ),
@@ -150,6 +143,10 @@ class _ChooseDetailsState extends State<ChooseDetails> {
 
   Widget _selectClass() {
     return Container(
+      decoration: BoxDecoration(
+        border: Border.all(width: 1.5, color: Colors.blue),
+        // borderRadius: BorderRadius.circular(20.0),
+      ),
       margin: EdgeInsets.all(5.0),
       child: Column(
         children: <Widget>[
@@ -206,6 +203,10 @@ class _ChooseDetailsState extends State<ChooseDetails> {
 
   Widget _selectSemester() {
     return Container(
+      decoration: BoxDecoration(
+        border: Border.all(width: 1.5, color: Colors.blue),
+        // borderRadius: BorderRadius.circular(20.0),
+      ),
       margin: EdgeInsets.all(5.0),
       alignment: Alignment.center,
       width: double.infinity,

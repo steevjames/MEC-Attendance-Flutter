@@ -1,4 +1,4 @@
-package com.example.mec_attendance;
+package com.mec.attendance;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './createList.dart';
 import 'package:beautifulsoup/beautifulsoup.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import './timetable.dart';
@@ -18,15 +19,19 @@ class _MyHomePageState extends State<MyHomePage> {
   var classname = '';
   var studname = "Attendance";
   var timeTable = [];
+  var noOfClassesList = [];
   Function floatingButtonAction = () {};
 
   var mainElement = <Widget>[
-    SizedBox(height: 100.0,),
+    SizedBox(
+      height: 100.0,
+    ),
     Center(
         child: SizedBox(
             height: 70.0, width: 70.0, child: CircularProgressIndicator()))
   ];
   var studentattendance = [];
+  var goback = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +85,17 @@ class _MyHomePageState extends State<MyHomePage> {
       }
       if (subjectAndLastUpdated.length != 0) subjectAndLastUpdated.removeAt(0);
 
+      // Get first row to calculate number of classes finished.
+      var firstrow = getTableRow(tablelist[0], 0);
+      if (firstrow.length != 0) firstrow.removeAt(0);
+      if (firstrow.length != 0) firstrow.removeAt(0);
+      for (int i = 0; i < firstrow.length; i++) {
+        var str = firstrow[i].substring(6);
+        str = str.substring(0, str.length - 1);
+        noOfClassesList.add(int.parse(str));
+      }
+      // print(noOfClassesList);
+
 //Getting Time Table
       for (int i = 0; i < 7; i++) {
         timeTable.add(getTimeTableRow(tablelist[2], i));
@@ -92,13 +108,13 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       }
 
-//Removes Spaces
+//Removes Spaces from Time Table
       for (int i = 0; i < timeTable.length; i++) {
         for (int j = 0; j < timeTable[i].length; j++) {
           timeTable[i][j] = timeTable[i][j].trim();
         }
       }
-//Removes blank Elements
+//Removes blank Elements from Time Table
       for (int i = 0; i < timeTable.length; i++) {
         timeTable[i].removeWhere((value) => value == '');
       }
@@ -108,30 +124,32 @@ class _MyHomePageState extends State<MyHomePage> {
 
       setState(() {
         mainElement = <Widget>[];
-        mainElement = returnsList(
-            studentattendance, subjectAndLastUpdated, noOfSubjects, context);
-        if (studentattendance.length != 0)
+        mainElement = returnsList(studentattendance, subjectAndLastUpdated,
+            noOfSubjects, noOfClassesList, context);
+        if (studentattendance.length != 0) {
           studname = studentattendance[0];
-        else
+          //Remapping Floating Button
+          floatingButtonAction = () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Tt(
+                  tt: timeTable,
+                  classname: classname,
+                ),
+              ),
+            );
+          };
+          goback = 0;
+        } else {
           mainElement = <Widget>[
             Container(
                 padding: EdgeInsets.all(20.0),
                 alignment: Alignment.center,
-                child: Text('Student with current details caanot be found'))
+                child: Text('Data With Given Details Have Not Been Entered.'))
           ];
-
-        //Remapping Floating Button
-        floatingButtonAction = () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Tt(
-                tt: timeTable,
-                classname: classname,
-              ),
-            ),
-          );
-        };
+          goback = 1;
+        }
       });
 
       // print(studentattendance);
@@ -169,34 +187,52 @@ class _MyHomePageState extends State<MyHomePage> {
       Navigator.pushReplacementNamed(context, '/choose');
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: onbackbutton,
+    return WillPopScope(
+      onWillPop: () async {
+        // await showDialog or Show add banners or whatever
+        // then
+        if (goback == 1)
+          Navigator.pushReplacementNamed(
+              context, '/choose'); // return true if the route to be popped
+        else
+          // Navigator.pushReplacementNamed(context, '/attendance');
+        return true;
+        return false;
+      },
+      child: Scaffold(
+        appBar: GradientAppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: onbackbutton,
+          ),
+          centerTitle: true,
+          title: Text(
+            studname,
+            style: TextStyle(fontSize: 19.0),
+          ),
+          backgroundColorStart: Colors.cyan,
+          backgroundColorEnd: Colors.indigo,
         ),
-        centerTitle: true,
-        title: Text(
-          studname,
-          style: TextStyle(fontSize: 19.0),
+        backgroundColor: Color(0xFFe7e7e7),
+        floatingActionButton: FloatingActionButton(
+          onPressed: floatingButtonAction,
+          child: Icon(Icons.table_chart),
+          backgroundColor: Color(0xFF2680C1),
         ),
-      ),
-      backgroundColor: Color(0xFFe7e7e7),
-      floatingActionButton: FloatingActionButton(
-        onPressed: floatingButtonAction,
-        child: Icon(Icons.ac_unit),
-        backgroundColor: Colors.blue,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-                SizedBox(
-                  height: 10.0,
-                )
-              ] +
-              mainElement +
-              [SizedBox(height: 20.0)],
+        body: Container(
+          decoration: BoxDecoration(color: Color(0xFFdddddd)),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                    SizedBox(
+                      height: 10.0,
+                    )
+                  ] +
+                  mainElement +
+                  [SizedBox(height: 20.0)],
+            ),
+          ),
         ),
       ),
     );

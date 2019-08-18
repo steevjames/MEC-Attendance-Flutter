@@ -19,6 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  gradient_app_bar: ^0.0.1
   cupertino_icons: ^0.1.2
   http: ^0.12.0+2
   beautifulsoup: ^0.0.1
