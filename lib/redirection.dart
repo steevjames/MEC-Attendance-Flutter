@@ -21,24 +21,27 @@ class _RedirectState extends State<Redirect> {
   }
 
   Widget build(BuildContext context) {
-    getDetailsFromStorage();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      getDetailsFromStorage();
+    });
 
-    return Center();
+    return Center(
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              stops: [0.1, 0.9],
+              colors: [Colors.indigo[400], Colors.cyan[400]]),
+        ),
+        child: Center(
+          child: Image(
+            image: AssetImage('assets/mec.png'),
+            width: 225,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
   }
 }
-
-// class HomePage extends StatelessWidget {
-//   Future<bool> _onWillPop() {
-//     //Do action Here
-//     print('hey');
-//     return 1 ?? false;
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return WillPopScope(
-//       onWillPop: _onWillPop,
-//       child: Text("Home Page"),
-//     );
-//   }
-// }

@@ -5,6 +5,8 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import './timetable.dart';
+import 'dart:convert';
+
 
 class MyHomePage extends StatefulWidget {
   MyHomePage();
@@ -20,7 +22,6 @@ class _MyHomePageState extends State<MyHomePage> {
   var studname = "Attendance";
   var timeTable = [];
   var noOfClassesList = [];
-  Function floatingButtonAction = () {};
 
   var mainElement = <Widget>[
     SizedBox(
@@ -90,11 +91,15 @@ class _MyHomePageState extends State<MyHomePage> {
       if (firstrow.length != 0) firstrow.removeAt(0);
       if (firstrow.length != 0) firstrow.removeAt(0);
       for (int i = 0; i < firstrow.length; i++) {
+        var classno = firstrow[i].split('(')[1].split(')')[0];
         var str = firstrow[i].substring(6);
         str = str.substring(0, str.length - 1);
-        noOfClassesList.add(int.parse(str));
+        // noOfClassesList.add(int.parse(str));
+        noOfClassesList.add(int.parse(classno));
       }
       // print(noOfClassesList);
+
+      timeTable=[];
 
 //Getting Time Table
       for (int i = 0; i < 7; i++) {
@@ -111,8 +116,11 @@ class _MyHomePageState extends State<MyHomePage> {
 //Removes Spaces from Time Table
       for (int i = 0; i < timeTable.length; i++) {
         for (int j = 0; j < timeTable[i].length; j++) {
-          timeTable[i][j] = timeTable[i][j].trim();
+          // print(timeTable[i][j].trim());
+          timeTable[i][j] = timeTable[i][j].trim() + ' ';
         }
+        timeTable[i].removeAt(0);
+        timeTable[i].removeLast();
       }
 //Removes blank Elements from Time Table
       for (int i = 0; i < timeTable.length; i++) {
@@ -122,24 +130,25 @@ class _MyHomePageState extends State<MyHomePage> {
       // if (timeTable.length != 0) timeTable.removeAt(0);
       // print(timeTable);
 
+      savetimetable() async {
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        pref.setString('timetable', json.encode(timeTable));
+      }
+      savetimetable();
+
       setState(() {
         mainElement = <Widget>[];
         mainElement = returnsList(studentattendance, subjectAndLastUpdated,
             noOfSubjects, noOfClassesList, context);
         if (studentattendance.length != 0) {
+          // Convert Name To Title Case
+          studentattendance[0] = studentattendance[0]
+              .toLowerCase()
+              .split(' ')
+              .map((s) => s[0].toUpperCase() + s.substring(1))
+              .join(' ');
           studname = studentattendance[0];
-          //Remapping Floating Button
-          floatingButtonAction = () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Tt(
-                  tt: timeTable,
-                  classname: classname,
-                ),
-              ),
-            );
-          };
+
           goback = 0;
         } else {
           mainElement = <Widget>[
@@ -170,6 +179,12 @@ class _MyHomePageState extends State<MyHomePage> {
       classname = pref.getString('class');
       var rollno2 = pref.getString('rollno');
       rollno = int.parse(rollno2);
+
+      var recoveredtimetable = pref.getString('timetable');
+      if(recoveredtimetable!=null) {
+        timeTable= json.decode(recoveredtimetable);
+      }
+      print(timeTable);
       print('Storage Data...');
       getData();
     }
@@ -182,6 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
     onbackbutton() async {
       SharedPreferences pref = await SharedPreferences.getInstance();
       pref.remove('class');
+      pref.remove('timetable');
       pref.remove('rollno');
       // print(pref.getString('class'));
       Navigator.pushReplacementNamed(context, '/choose');
@@ -199,38 +215,54 @@ class _MyHomePageState extends State<MyHomePage> {
         return true;
         return false;
       },
-      child: Scaffold(
-        appBar: GradientAppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: onbackbutton,
-          ),
-          centerTitle: true,
-          title: Text(
-            studname,
-            style: TextStyle(fontSize: 19.0),
-          ),
-          backgroundColorStart: Colors.cyan,
-          backgroundColorEnd: Colors.indigo,
+      child: MaterialApp(
+        title: 'Attendance',
+        theme: ThemeData(
+          scaffoldBackgroundColor: Color(0xFFe7e7e7),
         ),
-        backgroundColor: Color(0xFFe7e7e7),
-        floatingActionButton: FloatingActionButton(
-          onPressed: floatingButtonAction,
-          child: Icon(Icons.table_chart),
-          backgroundColor: Color(0xFF2680C1),
-        ),
-        body: Container(
-          decoration: BoxDecoration(color: Color(0xFFdddddd)),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                    SizedBox(
-                      height: 10.0,
-                    )
-                  ] +
-                  mainElement +
-                  [SizedBox(height: 20.0)],
+        home: Scaffold(
+          appBar: GradientAppBar(
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: onbackbutton,
+            ),
+            centerTitle: true,
+            title: Text(
+              studname,
+              style: TextStyle(fontSize: 19.0),
+            ),
+            backgroundColorStart: Colors.cyan,
+            backgroundColorEnd: Colors.indigo,
+          ),
+          // backgroundColor: Color(0xFFe7e7e7),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              if (timeTable.length != 0)
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Tt(
+                      tt: timeTable,
+                      classname: classname,
+                    ),
+                  ),
+                );
+            },
+            child: Icon(Icons.table_chart),
+            backgroundColor: Color(0xFF2680C1),
+          ),
+          body: Container(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                      SizedBox(
+                        height: 10.0,
+                      )
+                    ] +
+                    mainElement +
+                    [SizedBox(height: 20.0)],
+              ),
             ),
           ),
         ),

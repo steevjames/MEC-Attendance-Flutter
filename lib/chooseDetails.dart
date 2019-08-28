@@ -69,7 +69,7 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                               'Choose Semester : ',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                                                        Transform.scale(
+                            Transform.scale(
                               scale: 1,
                               child: _selectSemester(),
                             ),
@@ -124,6 +124,7 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                                 await SharedPreferences.getInstance();
                             pref.setString('class', cls);
                             pref.setString('rollno', _rollno.toString());
+                            pref.remove('timetable');
                             // print('Final Class Name :' + cls);
                             Navigator.pushReplacementNamed(
                                 context, '/attendance');

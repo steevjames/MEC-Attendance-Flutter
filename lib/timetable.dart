@@ -58,12 +58,12 @@ class _TtState extends State<Tt> with SingleTickerProviderStateMixin {
         ),
         body: Container(
           decoration: BoxDecoration(
-            // gradient: LinearGradient(
-            //     begin: Alignment.topRight,
-            //     end: Alignment.topLeft,
-            //     stops: [0.1, 0.9],
-            //     colors: [Colors.indigo[400], Colors.cyan[400]]),
-          ),
+              // gradient: LinearGradient(
+              //     begin: Alignment.topRight,
+              //     end: Alignment.topLeft,
+              //     stops: [0.1, 0.9],
+              //     colors: [Colors.indigo[400], Colors.cyan[400]]),
+              ),
           child: TabBarView(
             children: [
               schedule(timeTable[0], 0),
@@ -96,23 +96,78 @@ Widget schedule(timetable, day) {
   for (int i = 0; i < ttcopy.length; i++) {
     listofperiods.add(
       Container(
-        margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
-        child: Text((i + 1).toString() + '.  ' + ttcopy[i]),
-      ),
+          margin: EdgeInsets.fromLTRB(10, 0, 15, 2),
+          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(100),
+                bottomLeft: Radius.circular(100),
+                topRight: Radius.circular(40),
+                bottomRight: Radius.circular(40),
+              ),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                // Period Number
+                Container(
+                    margin: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                    width: 50.0,
+                    height: 50.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xFF19AAD5),
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.topRight,
+                          stops: [0.1, 0.9],
+                          colors: [Color(0xFF19AAD5), Color(0xFF2680C1)]),
+                    ),
+                    child: Center(
+                        child: Text((i + 1).toString(),
+                            style:
+                                TextStyle(fontSize: 17, color: Colors.white)))),
+                //Time Table Value
+                Expanded(
+                  child: Container(
+                    // margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: Text(
+                      ttcopy[i],
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF555555)),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          )),
     );
   }
 
   // print(ttcopy);
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: <Widget>[
-          SizedBox(
-            height: 50.0,
-          ),
-        ] +
-        listofperiods,
+  return SingleChildScrollView(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+            SizedBox(
+              height: 40.0,
+            ),
+          ] +
+          listofperiods +
+          [
+            SizedBox(
+              height: 40.0,
+            )
+          ],
+    ),
   );
 }
