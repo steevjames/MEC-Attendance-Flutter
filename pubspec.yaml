@@ -1,6 +1,6 @@
 name: mec_attendance
 description: A new Flutter project.
-version: 1.0.0+1
+version: 1.0.2+3
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -14,6 +14,8 @@ dependencies:
   beautifulsoup: ^0.0.1
   shared_preferences: ^0.5.3+4
   retry: ^3.0.0+1
+  url_launcher: ^5.1.2
+
 
 dev_dependencies:
   flutter_test:

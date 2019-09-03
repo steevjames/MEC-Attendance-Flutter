@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import './timetable.dart';
 import 'dart:convert';
-
+import 'package:url_launcher/url_launcher.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage();
@@ -99,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
       }
       // print(noOfClassesList);
 
-      timeTable=[];
+      timeTable = [];
 
 //Getting Time Table
       for (int i = 0; i < 7; i++) {
@@ -134,6 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString('timetable', json.encode(timeTable));
       }
+
       savetimetable();
 
       setState(() {
@@ -167,11 +168,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // Fetch Data from the Site
     getData() async {
-      http.Response response = await http
-          .get('http://attendance.mec.ac.in/view4stud.php?class=' + classname);
-      var soup = Beautifulsoup(response.body.toString());
-      convertData(soup);
-      print('Web Data ...');
+      try {
+        http.Response response = await http.get(
+            'http://attendance.mec.ac.in/view4stud.php?class=' + classname);
+        var soup = Beautifulsoup(response.body.toString());
+        convertData(soup);
+        print('Web Data ...');
+      } catch (_) {
+        await Future.delayed(const Duration(seconds: 2), getData);
+        // getData();
+      }
     }
 
     getDetailsFromStorage() async {
@@ -181,10 +187,10 @@ class _MyHomePageState extends State<MyHomePage> {
       rollno = int.parse(rollno2);
 
       var recoveredtimetable = pref.getString('timetable');
-      if(recoveredtimetable!=null) {
-        timeTable= json.decode(recoveredtimetable);
+      if (recoveredtimetable != null) {
+        timeTable = json.decode(recoveredtimetable);
       }
-      print(timeTable);
+      // print(timeTable);
       print('Storage Data...');
       getData();
     }
@@ -212,7 +218,7 @@ class _MyHomePageState extends State<MyHomePage> {
               context, '/choose'); // return true if the route to be popped
         else
           // Navigator.pushReplacementNamed(context, '/attendance');
-        return true;
+          return true;
         return false;
       },
       child: MaterialApp(
@@ -222,6 +228,44 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         home: Scaffold(
           appBar: GradientAppBar(
+            actions: <Widget>[
+              PopupMenuButton(
+                itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                  PopupMenuItem(
+                    child: InkWell(
+                      onTap: () => _launchURL(
+                          'mailto:steevjames11@gmail.com?subject=[MEC Attendance Bug/Suggestion Submission]'),
+                      child: Row(
+                        children: <Widget>[
+                          Text('Report Bugs/Suggestions'),
+                        ],
+                      ),
+                    ),
+                  ),
+                  PopupMenuItem(
+                    child: InkWell(
+                        onTap: () => _launchURL(
+                            'http://attendance.mec.ac.in/view4stud.php?class=' +
+                                classname),
+                        child: Row(
+                          children: <Widget>[
+                            Text('View on Site'),
+                          ],
+                        )),
+                  ),
+                  PopupMenuItem(
+                    child: InkWell(
+                        onTap: () => _launchURL(
+                            'https://play.google.com/store/apps/details?id=com.mec.attendance'),
+                        child: Row(
+                          children: <Widget>[
+                            Text('Rate'),
+                          ],
+                        )),
+                  ),
+                ],
+              )
+            ],
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: onbackbutton,
@@ -268,5 +312,13 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+  }
+}
+
+_launchURL(url) async {
+  if (await canLaunch(url) && url != '') {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
   }
 }
