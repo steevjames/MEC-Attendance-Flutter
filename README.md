@@ -1,10 +1,11 @@
-# mec_attendance
+# MEC Attendance
 
-A new Flutter project.
+This app is allows students of Government Model Engineering College to check their attendance and timetable.
+
+It is available for download on Google Play.
+Link : https://play.google.com/store/apps/details?id=com.mec.attendance
 
 ## Getting Started
-
-This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
 
