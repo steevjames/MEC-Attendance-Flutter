@@ -1,6 +1,6 @@
 name: mec_attendance
-description: A new Flutter project.
-version: 1.0.2+3
+description: An app for MECians to check their attendance.
+version: 1.0.6+7
 
 environment:
   sdk: ">=2.1.0 <3.0.0"

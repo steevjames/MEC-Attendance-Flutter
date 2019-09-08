@@ -217,8 +217,8 @@ class _MyHomePageState extends State<MyHomePage> {
           Navigator.pushReplacementNamed(
               context, '/choose'); // return true if the route to be popped
         else
-          // Navigator.pushReplacementNamed(context, '/attendance');
-          return true;
+          Navigator.pushReplacementNamed(context, '/attendance');
+          // return true;
         return false;
       },
       child: MaterialApp(
@@ -232,15 +232,15 @@ class _MyHomePageState extends State<MyHomePage> {
               PopupMenuButton(
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                   PopupMenuItem(
-                    child: InkWell(
-                      onTap: () => _launchURL(
-                          'mailto:steevjames11@gmail.com?subject=[MEC Attendance Bug/Suggestion Submission]'),
-                      child: Row(
-                        children: <Widget>[
-                          Text('Report Bugs/Suggestions'),
-                        ],
+                      child: InkWell(
+                        onTap: () => _launchURL(
+                            'mailto:steevjames11@gmail.com?subject=[MEC Attendance Bug/Suggestion Submission]'),
+                        child: Row(
+                          children: <Widget>[
+                            Text('Report Bugs'),
+                          ],
+                        ),
                       ),
-                    ),
                   ),
                   PopupMenuItem(
                     child: InkWell(
