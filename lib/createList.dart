@@ -7,20 +7,26 @@ returnsList(studentattendance, subjectAndLastUpdated, length, noOfClassesList,
 
   for (int i = 0; i < length - 1; i++) {
     var attendance;
+    var elective = 0;
     if (double.tryParse(studentattendance[i + 1]) != null)
       attendance = double.parse(studentattendance[i + 1]);
-    else
+    else {
       attendance = 0.0;
+      elective = 1;
+    }
     var totalNoOfClasses = noOfClassesList[i];
     var attented = (attendance * totalNoOfClasses) / 100;
+    attented = attented.round() + 0.0;
     var canCut = 0.0;
     var canCutText = '';
+
     if (attendance == 75.0) {
       canCutText = 'Perfectly Balanced As All Things Should Be !';
     } else if (attendance > 75.0) {
       canCut = (4 * attented - 3 * totalNoOfClasses) / 3;
       canCutText = 'Can Cut ' + canCut.floor().toString() + ' Classes';
-    } else if (attendance == 0.0 && totalNoOfClasses == 0) {
+    } else if ((attendance == 0.0 && totalNoOfClasses == 0) ||
+        (elective == 1)) {
       canCutText = '-------';
     } else {
       canCut = 3 * totalNoOfClasses - 4 * attented;
@@ -51,10 +57,14 @@ returnsList(studentattendance, subjectAndLastUpdated, length, noOfClassesList,
                 0.9
               ],
               colors: [
-                (attendance >= 75 || (attendance == 0 && totalNoOfClasses==0))
+                (attendance >= 75 ||
+                        (attendance == 0 && totalNoOfClasses == 0) ||
+                        elective == 1)
                     ? Color(0xFF19AAD5)
                     : Color(0xFFaa0000),
-                (attendance >= 75 || (attendance == 0 && totalNoOfClasses==0))
+                (attendance >= 75 ||
+                        (attendance == 0 && totalNoOfClasses == 0) ||
+                        elective == 1)
                     ? Color(0xFF3255AC)
                     : Color(0xFF330000),
               ]),
@@ -233,10 +243,16 @@ returnsList(studentattendance, subjectAndLastUpdated, length, noOfClassesList,
                                       0.9
                                     ],
                                     colors: [
-                                      (attendance >= 75 || (attendance == 0 && totalNoOfClasses==0))
+                                      (attendance >= 75 ||
+                                              (attendance == 0 &&
+                                                  totalNoOfClasses == 0) ||
+                                              elective == 1)
                                           ? Color(0xFF19AAD5) //Blue Left
                                           : Color(0xFFaa0000), // Red
-                                      (attendance >= 75 || (attendance == 0 && totalNoOfClasses==0))
+                                      (attendance >= 75 ||
+                                              (attendance == 0 &&
+                                                  totalNoOfClasses == 0) ||
+                                              elective == 1)
                                           ? Color(0xFF3255AC) // Blue Right
                                           : Color(0xFF330000),
                                     ]),

@@ -143,11 +143,13 @@ class _MyHomePageState extends State<MyHomePage> {
             noOfSubjects, noOfClassesList, context);
         if (studentattendance.length != 0) {
           // Convert Name To Title Case
-          studentattendance[0] = studentattendance[0]
-              .toLowerCase()
-              .split(' ')
-              .map((s) => s[0].toUpperCase() + s.substring(1))
-              .join(' ');
+          try {
+            studentattendance[0] = studentattendance[0]
+                .toLowerCase()
+                .split(' ')
+                .map((s) => s[0].toUpperCase() + s.substring(1))
+                .join(' ');
+          } catch (_) {}
           studname = studentattendance[0];
 
           goback = 0;
@@ -169,11 +171,11 @@ class _MyHomePageState extends State<MyHomePage> {
     // Fetch Data from the Site
     getData() async {
       try {
-        http.Response response = await http.get(
-            'http://attendance.mec.ac.in/view4stud.php?class=' + classname);
-        var soup = Beautifulsoup(response.body.toString());
-        convertData(soup);
-        print('Web Data ...');
+      http.Response response = await http
+          .get('http://attendance.mec.ac.in/view4stud.php?class=' + classname);
+      var soup = Beautifulsoup(response.body.toString());
+      convertData(soup);
+      print('Web Data ...');
       } catch (_) {
         await Future.delayed(const Duration(seconds: 2), getData);
         // getData();
@@ -232,15 +234,15 @@ class _MyHomePageState extends State<MyHomePage> {
               PopupMenuButton(
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                   PopupMenuItem(
-                      child: InkWell(
-                        onTap: () => _launchURL(
-                            'mailto:steevjames11@gmail.com?subject=[MEC Attendance Bug/Suggestion Submission]'),
-                        child: Row(
-                          children: <Widget>[
-                            Text('Report Bugs'),
-                          ],
-                        ),
+                    child: InkWell(
+                      onTap: () => _launchURL(
+                          'mailto:steevjames11@gmail.com?subject=[MEC Attendance Bug/Suggestion Submission]'),
+                      child: Row(
+                        children: <Widget>[
+                          Text('Report Bugs'),
+                        ],
                       ),
+                    ),
                   ),
                   PopupMenuItem(
                     child: InkWell(
