@@ -171,14 +171,13 @@ class _MyHomePageState extends State<MyHomePage> {
     // Fetch Data from the Site
     getData() async {
       try {
-      http.Response response = await http
-          .get('http://attendance.mec.ac.in/view4stud.php?class=' + classname);
-      var soup = Beautifulsoup(response.body.toString());
-      convertData(soup);
-      print('Web Data ...');
+        http.Response response = await http.get(
+            'http://attendance.mec.ac.in/view4stud.php?class=' + classname);
+        var soup = Beautifulsoup(response.body.toString());
+        convertData(soup);
+        print('Web Data ...');
       } catch (_) {
         await Future.delayed(const Duration(seconds: 2), getData);
-        // getData();
       }
     }
 
@@ -220,7 +219,7 @@ class _MyHomePageState extends State<MyHomePage> {
               context, '/choose'); // return true if the route to be popped
         else
           // Navigator.pushReplacementNamed(context, '/attendance');
-          return true;
+        return true;
         return false;
       },
       child: MaterialApp(
@@ -232,38 +231,30 @@ class _MyHomePageState extends State<MyHomePage> {
           appBar: GradientAppBar(
             actions: <Widget>[
               PopupMenuButton(
+                onSelected: (val) {
+                  if (val == 1)
+                    _launchURL(
+                        'mailto:steevjames11@gmail.com?subject=[MEC Attendance Bug/Suggestion Submission]');
+                  else if (val == 2)
+                    _launchURL(
+                        'http://attendance.mec.ac.in/view4stud.php?class=' +
+                            classname);
+                  else if (val == 3)
+                    _launchURL(
+                        'https://play.google.com/store/apps/details?id=com.mec.attendance');
+                },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                   PopupMenuItem(
-                    child: InkWell(
-                      onTap: () => _launchURL(
-                          'mailto:steevjames11@gmail.com?subject=[MEC Attendance Bug/Suggestion Submission]'),
-                      child: Row(
-                        children: <Widget>[
-                          Text('Report Bugs'),
-                        ],
-                      ),
-                    ),
+                    value: 1,
+                    child: Text('Report Bugs'),
                   ),
                   PopupMenuItem(
-                    child: InkWell(
-                        onTap: () => _launchURL(
-                            'http://attendance.mec.ac.in/view4stud.php?class=' +
-                                classname),
-                        child: Row(
-                          children: <Widget>[
-                            Text('View on Site'),
-                          ],
-                        )),
+                    value: 2,
+                    child: Text('View on Site'),
                   ),
                   PopupMenuItem(
-                    child: InkWell(
-                        onTap: () => _launchURL(
-                            'https://play.google.com/store/apps/details?id=com.mec.attendance'),
-                        child: Row(
-                          children: <Widget>[
-                            Text('Rate'),
-                          ],
-                        )),
+                    value: 3,
+                    child: Text('Rate'),
                   ),
                 ],
               )

@@ -1,6 +1,6 @@
 name: mec_attendance
 description: An app for MECians to check their attendance.
-version: 1.0.7+9
+version: 1.0.0+11
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
