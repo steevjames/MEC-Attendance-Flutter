@@ -41,6 +41,7 @@ returnsList(studentattendance, subjectAndLastUpdated, length, noOfClassesList,
     // Getting Subject Name
     var subname = subjectAndLastUpdated[i][0].toString();
     var subarray = subname.split(' ');
+    if(subarray[0].contains('0')||subarray[0].contains('1')||subarray[0].contains('2')||subarray[0].contains('3')||subarray[0].contains('4'))
     subarray.removeAt(0);
     subname = subarray.join(' ');
     // print(subname);

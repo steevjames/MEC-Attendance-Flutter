@@ -150,6 +150,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 .map((s) => s[0].toUpperCase() + s.substring(1))
                 .join(' ');
           } catch (_) {}
+
+
           studname = studentattendance[0];
 
           goback = 0;
@@ -278,7 +280,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Tt(
+                    builder: (context) =>TimeTable(
                       tt: timeTable,
                       classname: classname,
                     ),

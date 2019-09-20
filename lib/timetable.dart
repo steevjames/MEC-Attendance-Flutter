@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 
-class Tt extends StatefulWidget {
+class TimeTable extends StatefulWidget {
   final List<dynamic> tt;
   final classname;
 
-  const Tt({Key key, this.tt, this.classname}) : super(key: key);
+  const TimeTable({Key key, this.tt, this.classname}) : super(key: key);
 
   @override
-  _TtState createState() => _TtState();
+  _TimeTableState createState() => _TimeTableState();
 }
 
-class _TtState extends State<Tt> with SingleTickerProviderStateMixin {
+class _TimeTableState extends State<TimeTable>
+    with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     var timeTable = widget.tt;
@@ -90,7 +91,12 @@ Widget schedule(timetable, day) {
   ttcopy.removeAt(0);
 
   for (int i = 0; i < ttcopy.length; i++) {
-    ttcopy[i] = ttcopy[i].substring(ttcopy[i].indexOf(" ") + 1);
+    if (ttcopy[i].split(' ')[0].contains('0') ||
+        ttcopy[i].split(' ')[0].contains('1') ||
+        ttcopy[i].split(' ')[0].contains('2') ||
+        ttcopy[i].split(' ')[0].contains('3') ||
+        ttcopy[i].split(' ')[0].contains('4'))
+      ttcopy[i] = ttcopy[i].substring(ttcopy[i].indexOf(" ") + 1);
   }
 
   for (int i = 0; i < ttcopy.length; i++) {

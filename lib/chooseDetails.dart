@@ -146,7 +146,7 @@ class _ChooseDetailsState extends State<ChooseDetails> {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(width: 1.5, color: Colors.blue),
-        // borderRadius: BorderRadius.circular(20.0),
+        // borderRadius: BorderRadius.circular(10.0),
       ),
       margin: EdgeInsets.all(5.0),
       child: Column(
@@ -206,7 +206,7 @@ class _ChooseDetailsState extends State<ChooseDetails> {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(width: 1.5, color: Colors.blue),
-        // borderRadius: BorderRadius.circular(20.0),
+        // borderRadius: BorderRadius.circular(10.0),
       ),
       margin: EdgeInsets.all(5.0),
       alignment: Alignment.center,
