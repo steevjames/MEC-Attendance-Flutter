@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+var maincolor=Colors.indigo;
+
 class ChooseDetails extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -9,10 +11,14 @@ class ChooseDetails extends StatefulWidget {
 }
 
 class _ChooseDetailsState extends State<ChooseDetails> {
-  // final TextEditingController _inputControl = TextEditingController();
   int _radioValue = 0;
   int _radioValue2 = 1;
   int _rollno = 0;
+  int cached = 0;
+
+
+  var oldSem;
+  var oldBranch;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -30,6 +36,25 @@ class _ChooseDetailsState extends State<ChooseDetails> {
 
   @override
   Widget build(BuildContext context) {
+    getDetailsFromStorage() async {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      oldSem = pref.getInt('oldSem');
+      oldBranch = pref.getInt('oldBranch');
+
+      try {
+        if(oldSem<=5 && oldSem >=0 && oldBranch>=1 && oldBranch <=8)
+        setState(() {
+          _radioValue = oldSem % 6;
+          _radioValue2 = oldBranch % 9;
+        });
+      } catch (_) {}
+
+      cached = 1;
+      print('Details Obtained');
+    }
+
+    if (cached == 0) getDetailsFromStorage();
+
     return Scaffold(
       body: Container(
           alignment: Alignment.center,
@@ -46,6 +71,7 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                       Image.asset(
                         'assets/mec.png',
                         height: 130.0,
+                        color: maincolor,
                         // width: 200.0,
                       ),
                       Container(
@@ -58,10 +84,7 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                               'Choose Class :',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            Transform.scale(
-                              scale: 1,
-                              child: _selectClass(),
-                            ),
+                            _selectClass(),
                             SizedBox(
                               height: 20.0,
                             ),
@@ -69,10 +92,7 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                               'Choose Semester : ',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            Transform.scale(
-                              scale: 1,
-                              child: _selectSemester(),
-                            ),
+                            _selectSemester(),
                             SizedBox(
                               height: 15.0,
                             ),
@@ -88,13 +108,8 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                                   _rollno = n;
                                   return null;
                                 },
-                                // onChanged: (String val) {
-                                //   _rollno = int.parse(val);
-                                // },
-                                // controller: _inputControl,
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
-                                  // labelText: 'Roll No',
                                   hintText: 'Roll No.',
                                   icon: Icon(Icons.event),
                                 ),
@@ -105,7 +120,7 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                       ),
                       RaisedButton(
                         padding: EdgeInsets.symmetric(horizontal: 30.0),
-                        color: Colors.blue,
+                        color: maincolor,
                         shape: RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(15.0)),
                         child: Text(
@@ -118,14 +133,17 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                           }
                           var cls = makeClassString();
 
-                          // Saves Details when called.
+                          // Saves Details - it is used to load attendance page each time.
                           saveDetails() async {
                             SharedPreferences pref =
                                 await SharedPreferences.getInstance();
                             pref.setString('class', cls);
                             pref.setString('rollno', _rollno.toString());
                             pref.remove('timetable');
-                            // print('Final Class Name :' + cls);
+
+                            // Setting the selection to show when this page is again visited.
+                            pref.setInt('oldSem', _radioValue);
+                            pref.setInt('oldBranch', _radioValue2);
                             Navigator.pushReplacementNamed(
                                 context, '/attendance');
                           }
@@ -145,7 +163,7 @@ class _ChooseDetailsState extends State<ChooseDetails> {
   Widget _selectClass() {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(width: 1.5, color: Colors.blue),
+        border: Border.all(width: 1.5, color: maincolor),
         // borderRadius: BorderRadius.circular(10.0),
       ),
       margin: EdgeInsets.all(5.0),
@@ -205,7 +223,7 @@ class _ChooseDetailsState extends State<ChooseDetails> {
   Widget _selectSemester() {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(width: 1.5, color: Colors.blue),
+        border: Border.all(width: 1.5, color: maincolor),
         // borderRadius: BorderRadius.circular(10.0),
       ),
       margin: EdgeInsets.all(5.0),

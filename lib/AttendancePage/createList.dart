@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 
-returnsList(studentattendance, subjectAndLastUpdated, length, noOfClassesList,
+returnsList(
+    studentattendance,
+    subjectAndLastUpdated,
+    length,
+    noOfClassesList,
+    gradientWhenUnder1,
+    gradientWhenUnder2,
+    attendaneGradient1,
+    attendaneGradient2,
     context) {
   // print(noOfClassesList);
   var widgetList = <Widget>[];
@@ -41,9 +49,20 @@ returnsList(studentattendance, subjectAndLastUpdated, length, noOfClassesList,
     // Getting Subject Name
     var subname = subjectAndLastUpdated[i][0].toString();
     var subarray = subname.split(' ');
-    if(subarray[0].contains('0')||subarray[0].contains('1')||subarray[0].contains('2')||subarray[0].contains('3')||subarray[0].contains('4'))
-    subarray.removeAt(0);
+    if (subarray[0].contains('0') ||
+        subarray[0].contains('1') ||
+        subarray[0].contains('2') ||
+        subarray[0].contains('3') ||
+        subarray[0].contains('4')) subarray.removeAt(0);
     subname = subarray.join(' ');
+    try {
+      subname = subname
+          .trim()
+          .toLowerCase()
+          .split(' ')
+          .map((s) => s[0].toUpperCase() + s.substring(1))
+          .join(' ');
+    } catch (_) {}
     // print(subname);
 
     Widget _popupElement(t1, t2) {
@@ -61,13 +80,13 @@ returnsList(studentattendance, subjectAndLastUpdated, length, noOfClassesList,
                 (attendance >= 75 ||
                         (attendance == 0 && totalNoOfClasses == 0) ||
                         elective == 1)
-                    ? Color(0xFF19AAD5)
-                    : Color(0xFFaa0000),
+                    ? attendaneGradient1
+                    : gradientWhenUnder1,
                 (attendance >= 75 ||
                         (attendance == 0 && totalNoOfClasses == 0) ||
                         elective == 1)
-                    ? Color(0xFF3255AC)
-                    : Color(0xFF330000),
+                    ? attendaneGradient2
+                    : gradientWhenUnder2,
               ]),
         ),
         margin: EdgeInsets.symmetric(vertical: 5),
@@ -248,14 +267,14 @@ returnsList(studentattendance, subjectAndLastUpdated, length, noOfClassesList,
                                               (attendance == 0 &&
                                                   totalNoOfClasses == 0) ||
                                               elective == 1)
-                                          ? Color(0xFF19AAD5) //Blue Left
-                                          : Color(0xFFaa0000), // Red
+                                          ? attendaneGradient1 //Blue Left
+                                          : gradientWhenUnder1, // Red
                                       (attendance >= 75 ||
                                               (attendance == 0 &&
                                                   totalNoOfClasses == 0) ||
                                               elective == 1)
-                                          ? Color(0xFF3255AC) // Blue Right
-                                          : Color(0xFF330000),
+                                          ? attendaneGradient2 // Blue Right
+                                          : gradientWhenUnder2,
                                     ]),
                               ),
                               child: Text(

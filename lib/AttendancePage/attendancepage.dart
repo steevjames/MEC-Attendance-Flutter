@@ -4,18 +4,19 @@ import 'package:beautifulsoup/beautifulsoup.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import './timetable.dart';
+import '../Timetable/timetable.dart';
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
+import './convertdata.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage();
+class AttendancePage extends StatefulWidget {
+  AttendancePage();
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _AttendancePageState createState() => _AttendancePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _AttendancePageState extends State<AttendancePage> {
   var cached = 0;
   var rollno = 0;
   var classname = '';
@@ -23,56 +24,32 @@ class _MyHomePageState extends State<MyHomePage> {
   var timeTable = [];
   var noOfClassesList = [];
 
+  var gradientAppbarStart = Color(0xff000044);
+  var gradientAppbarEnd = Colors.indigo;
+
+  var attendaneGradient1 = Color(0xff000044);
+  var attendaneGradient2 = Colors.indigo;
+
+  var gradientWhenUnder1 = Color(0xFF880000);
+  var gradientWhenUnder2 = Color(0xFF880000);
+
+  var floatingButtonColor = Color(0xFF334499);
+
+  var pageBackgroundColor = Color(0xFFe7e7e7);
+
   var mainElement = <Widget>[
     SizedBox(
       height: 100.0,
     ),
     Center(
         child: SizedBox(
-            height: 70.0, width: 70.0, child: CircularProgressIndicator()))
+            height: 70.0, width: 70.0, child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.indigo),)))
   ];
   var studentattendance = [];
   var goback = 0;
 
   @override
   Widget build(BuildContext context) {
-    // 1st Argument : Table, 2nd Argument : Required Row
-    getTableRow(tablelist, row) {
-      var tablelistdoc = Beautifulsoup(tablelist);
-      var tablerows2 =
-          tablelistdoc.find_all("tr").map((e) => (e.outerHtml)).toList();
-      var tablerows = '';
-      if (tablerows2.length > row)
-        tablerows = tablerows2[row];
-      else
-        tablerows = '';
-      var tabledoc = Beautifulsoup(tablerows).get_text();
-      var tabledoclist = tabledoc.split('\n');
-      for (int i = 0; i < tabledoclist.length; i++)
-        tabledoclist[i] = tabledoclist[i].trim();
-
-      tabledoclist.removeWhere((value) => value == '');
-      return tabledoclist;
-    }
-
-    getTimeTableRow(tablelist, row) {
-      var tablelistdoc = Beautifulsoup(tablelist);
-      var tablerows2 =
-          tablelistdoc.find_all("tr").map((e) => (e.outerHtml)).toList();
-      var tablerows = '';
-      if (tablerows2.length > row)
-        tablerows = tablerows2[row];
-      else
-        tablerows = '';
-      var tabledoc = Beautifulsoup(tablerows).get_text();
-      var tabledoclist = tabledoc.split('\n');
-      // for (int i = 0; i < tabledoclist.length; i++)
-      //   tabledoclist[i] = tabledoclist[i].trim();
-
-      // tabledoclist.removeWhere((value) => value == '');
-      return tabledoclist;
-    }
-
 //Turn Fetched page to Required Data
     convertData(soup) {
       var tablelist = soup.find_all("table").map((e) => (e.outerHtml)).toList();
@@ -101,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       timeTable = [];
 
-//Getting Time Table
+      //Getting Time Table
       for (int i = 0; i < 7; i++) {
         timeTable.add(getTimeTableRow(tablelist[2], i));
       }
@@ -113,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       }
 
-//Removes Spaces from Time Table
+      //Removes Spaces from Time Table
       for (int i = 0; i < timeTable.length; i++) {
         for (int j = 0; j < timeTable[i].length; j++) {
           // print(timeTable[i][j].trim());
@@ -122,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
         timeTable[i].removeAt(0);
         timeTable[i].removeLast();
       }
-//Removes blank Elements from Time Table
+      //Removes blank Elements from Time Table
       for (int i = 0; i < timeTable.length; i++) {
         timeTable[i].removeWhere((value) => value == '');
       }
@@ -139,8 +116,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
       setState(() {
         mainElement = <Widget>[];
-        mainElement = returnsList(studentattendance, subjectAndLastUpdated,
-            noOfSubjects, noOfClassesList, context);
+        mainElement = returnsList(
+            studentattendance,
+            subjectAndLastUpdated,
+            noOfSubjects,
+            noOfClassesList,
+            gradientWhenUnder1,
+            gradientWhenUnder2,
+            attendaneGradient1,
+            attendaneGradient2,
+            context);
         if (studentattendance.length != 0) {
           // Convert Name To Title Case
           try {
@@ -150,7 +135,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 .map((s) => s[0].toUpperCase() + s.substring(1))
                 .join(' ');
           } catch (_) {}
-
 
           studname = studentattendance[0];
 
@@ -214,8 +198,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return WillPopScope(
       onWillPop: () async {
-        // await showDialog or Show add banners or whatever
-        // then
+        // Controls Back Button
         if (goback == 1)
           Navigator.pushReplacementNamed(
               context, '/choose'); // return true if the route to be popped
@@ -227,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: MaterialApp(
         title: 'Attendance',
         theme: ThemeData(
-          scaffoldBackgroundColor: Color(0xFFe7e7e7),
+          scaffoldBackgroundColor: pageBackgroundColor,
         ),
         home: Scaffold(
           appBar: GradientAppBar(
@@ -270,25 +253,26 @@ class _MyHomePageState extends State<MyHomePage> {
               studname,
               style: TextStyle(fontSize: 19.0),
             ),
-            backgroundColorStart: Colors.cyan,
-            backgroundColorEnd: Colors.indigo,
+            backgroundColorStart: gradientAppbarStart,
+            backgroundColorEnd: gradientAppbarEnd,
           ),
-          // backgroundColor: Color(0xFFe7e7e7),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               if (timeTable.length != 0)
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>TimeTable(
+                    builder: (context) => TimeTable(
                       tt: timeTable,
                       classname: classname,
+                      gradientAppbarStart: gradientAppbarStart,
+                      gradientAppbarEnd: gradientAppbarEnd,
                     ),
                   ),
                 );
             },
             child: Icon(Icons.table_chart),
-            backgroundColor: Color(0xFF2680C1),
+            backgroundColor: floatingButtonColor,
           ),
           body: Container(
             child: SingleChildScrollView(

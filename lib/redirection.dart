@@ -32,7 +32,7 @@ class _RedirectState extends State<Redirect> {
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
               stops: [0.1, 0.9],
-              colors: [Colors.indigo[400], Colors.cyan[400]]),
+              colors: [Color(0xff000044), Colors.indigo]),
         ),
         child: Center(
           child: Image(

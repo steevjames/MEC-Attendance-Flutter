@@ -4,8 +4,16 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 class TimeTable extends StatefulWidget {
   final List<dynamic> tt;
   final classname;
+  final gradientAppbarStart;
+  final gradientAppbarEnd;
 
-  const TimeTable({Key key, this.tt, this.classname}) : super(key: key);
+  const TimeTable(
+      {Key key,
+      this.tt,
+      this.classname,
+      this.gradientAppbarStart,
+      this.gradientAppbarEnd})
+      : super(key: key);
 
   @override
   _TimeTableState createState() => _TimeTableState();
@@ -17,6 +25,8 @@ class _TimeTableState extends State<TimeTable>
   Widget build(BuildContext context) {
     var timeTable = widget.tt;
     var classname = widget.classname;
+    var gradientAppbarStart = widget.gradientAppbarStart;
+    var gradientAppbarEnd = widget.gradientAppbarEnd;
     // print(timeTable);
     DateTime date = DateTime.now();
     // 1 is Monday and 7 is Sunday.
@@ -31,8 +41,8 @@ class _TimeTableState extends State<TimeTable>
       child: Scaffold(
         backgroundColor: Color(0xFFdddddd),
         appBar: GradientAppBar(
-          backgroundColorStart: Colors.cyan,
-          backgroundColorEnd: Colors.indigo,
+          backgroundColorStart: gradientAppbarStart,
+          backgroundColorEnd: gradientAppbarEnd,
           bottom: TabBar(
             indicatorWeight: 5,
             indicatorColor: Colors.white,
@@ -67,11 +77,11 @@ class _TimeTableState extends State<TimeTable>
               ),
           child: TabBarView(
             children: [
-              schedule(timeTable[0], 0),
-              schedule(timeTable[1], 1),
-              schedule(timeTable[2], 2),
-              schedule(timeTable[3], 3),
-              schedule(timeTable[4], 4),
+              schedule(timeTable[0], 0, gradientAppbarStart, gradientAppbarEnd),
+              schedule(timeTable[1], 1, gradientAppbarStart, gradientAppbarEnd),
+              schedule(timeTable[2], 2, gradientAppbarStart, gradientAppbarEnd),
+              schedule(timeTable[3], 3, gradientAppbarStart, gradientAppbarEnd),
+              schedule(timeTable[4], 4, gradientAppbarStart, gradientAppbarEnd),
             ],
           ),
         ),
@@ -83,7 +93,7 @@ class _TimeTableState extends State<TimeTable>
 var cached = [0, 0, 0, 0, 0, 0, 0];
 
 // Here Timetable is list of periods that day.
-Widget schedule(timetable, day) {
+Widget schedule(timetable, day, gradientAppbarStart, gradientAppbarEnd) {
   // print(timetable);
   var ttcopy = []..addAll(timetable);
   // var ttcopy = timetable;
@@ -97,6 +107,15 @@ Widget schedule(timetable, day) {
         ttcopy[i].split(' ')[0].contains('3') ||
         ttcopy[i].split(' ')[0].contains('4'))
       ttcopy[i] = ttcopy[i].substring(ttcopy[i].indexOf(" ") + 1);
+
+    try {
+      ttcopy[i] = ttcopy[i]
+          .trim()
+          .toLowerCase()
+          .split(' ')
+          .map((s) => s[0].toUpperCase() + s.substring(1))
+          .join(' ');
+    } catch (_) {}
   }
 
   for (int i = 0; i < ttcopy.length; i++) {
@@ -129,7 +148,7 @@ Widget schedule(timetable, day) {
                           begin: Alignment.topLeft,
                           end: Alignment.topRight,
                           stops: [0.1, 0.9],
-                          colors: [Color(0xFF19AAD5), Color(0xFF2680C1)]),
+                          colors: [gradientAppbarStart, gradientAppbarEnd]),
                     ),
                     child: Center(
                         child: Text((i + 1).toString(),

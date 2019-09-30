@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mec_attendance/chooseDetails.dart';
-import './attendancepage.dart';
+import './ChooseDetailsPage/chooseDetails.dart';
+import './AttendancePage/attendancepage.dart';
 import './redirection.dart';
 
 void main() => runApp(MyApp());
@@ -11,12 +11,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Attendance',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.indigo,
       ),
       routes: {
         '/': (BuildContext context) => Redirect(),
         '/choose': (BuildContext context) => ChooseDetails(),
-        '/attendance': (BuildContext context) => MyHomePage(),
+        '/attendance': (BuildContext context) => AttendancePage(),
       },
     );
   }
