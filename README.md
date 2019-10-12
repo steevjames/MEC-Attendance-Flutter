@@ -1,7 +1,7 @@
 
 # MEC Attendance
 
-This app is allows students of Government Model Engineering College to check their attendance and timetable.
+This app allows students of Government Model Engineering College to check their attendance and timetable (and also the number of classes they can safely cut).
 
 It is available for download on Google Play.
 Link : https://play.google.com/store/apps/details?id=com.mec.attendance
