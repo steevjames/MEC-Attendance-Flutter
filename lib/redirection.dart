@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'dart:async';
+
+
+// Loading Page Gradient
+var gradient1 = Colors.indigo;
+var gradient2 = Colors.cyan;
 
 class Redirect extends StatefulWidget {
   Redirect();
@@ -32,7 +36,7 @@ class _RedirectState extends State<Redirect> {
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
               stops: [0.1, 0.9],
-              colors: [Color(0xff000044), Colors.indigo]),
+              colors: [gradient1, gradient2]),
         ),
         child: Center(
           child: Image(

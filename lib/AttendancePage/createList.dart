@@ -64,6 +64,26 @@ returnsList(
           .join(' ');
     } catch (_) {}
     // print(subname);
+    //Convert date to no of days
+    var lastupdated = subjectAndLastUpdated[i][1];
+    int luday, lumonth, luyear, difference = -1;
+    try {
+      luday = int.parse(lastupdated.substring(0, 2));
+      lumonth = int.parse(lastupdated.substring(3, 5));
+      luyear = int.parse(lastupdated.substring(6, 10));
+      print(luday.toString() +
+          ' : ' +
+          lumonth.toString() +
+          ' : ' +
+          luyear.toString());
+      var now = new DateTime.now();
+      var dateupdated = new DateTime.utc(luyear, lumonth, luday);
+      difference = now.difference(dateupdated).inDays;
+      print(difference);
+    } catch (_) {}
+    var lastupdatedstring = difference == -1
+        ? subjectAndLastUpdated[i][1]
+        : difference.toString() + ' Days Ago';
 
     Widget _popupElement(t1, t2) {
       return Container(
@@ -165,8 +185,8 @@ returnsList(
                           ': ' + attented.toStringAsFixed(0)),
                       _popupElement('Total No. of Classes',
                           ': ' + totalNoOfClasses.toString()),
-                      _popupElement(
-                          'Last Updated', ': ' + subjectAndLastUpdated[i][1]),
+                      _popupElement('Last Updated', lastupdatedstring),
+                      _popupElement('Updated Date', subjectAndLastUpdated[i][1]),
                       SizedBox(height: 10),
                       Center(
                           child: Text(
@@ -190,7 +210,7 @@ returnsList(
                     child: Text(
                       "Close",
                       style: TextStyle(
-                          // color: Colors.black54,
+                          color: attendaneGradient2,
                           fontSize: 12,
                           shadows: [
                             BoxShadow(
@@ -214,7 +234,7 @@ returnsList(
             margin: EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(20.0),
+              borderRadius: BorderRadius.circular(15.0),
               // gradient: LinearGradient(
               //     begin: Alignment.topRight,
               //     end: Alignment.bottomLeft,
@@ -235,9 +255,12 @@ returnsList(
                                 color: Color(0xFF555555), fontSize: 17.0),
                           ),
                         ),
+
+                        // The line under subject title.
                         Container(
-                          color: Colors.green,
-                          height: 1.2,
+                          color: Colors.grey,
+                          height: 1,
+                          // height: .1,
                           width: 500,
                           margin: EdgeInsets.only(
                               left: 10, right: 5, top: 5, bottom: 5),
@@ -296,7 +319,8 @@ returnsList(
                           padding: EdgeInsets.symmetric(
                               vertical: 5.0, horizontal: 10.0),
                           child: Text(
-                            'Last Updated : ' + subjectAndLastUpdated[i][1],
+                            'Last Updated : ' + lastupdatedstring,
+                            // subjectAndLastUpdated[i][1],
                             style: TextStyle(
                               color: Color(0xFF777777),
                               fontSize: 12,
@@ -307,17 +331,17 @@ returnsList(
                       ]),
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                  margin: EdgeInsets.fromLTRB(10, 5, 7, 5),
                   width: 75.0,
                   height: 75.0,
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
                     boxShadow: [
                       BoxShadow(
                         color: Color(0xFF555555),
-                        blurRadius: 2.0,
-                        spreadRadius: 0.0,
+                        blurRadius: 4,
+                        spreadRadius: -2.0,
                       )
                     ],
                   ),

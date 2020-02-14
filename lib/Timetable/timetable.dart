@@ -6,13 +6,17 @@ class TimeTable extends StatefulWidget {
   final classname;
   final gradientAppbarStart;
   final gradientAppbarEnd;
+  final gradientCircleStart;
+  final gradientCircleEnd;
 
   const TimeTable(
       {Key key,
       this.tt,
       this.classname,
       this.gradientAppbarStart,
-      this.gradientAppbarEnd})
+      this.gradientAppbarEnd,
+      this.gradientCircleStart,
+      this.gradientCircleEnd})
       : super(key: key);
 
   @override
@@ -27,14 +31,15 @@ class _TimeTableState extends State<TimeTable>
     var classname = widget.classname;
     var gradientAppbarStart = widget.gradientAppbarStart;
     var gradientAppbarEnd = widget.gradientAppbarEnd;
+    var gradientCircleStart = widget.gradientCircleStart;
+    var gradientCircleEnd = widget.gradientCircleEnd;
     // print(timeTable);
     DateTime date = DateTime.now();
     // 1 is Monday and 7 is Sunday.
     var day = date.weekday;
-    //We convert it to day to 0 as Monday
+    //We convert it to day to 0 as Monday and so on
     day = day - 1;
     if (day > 4) day = 0;
-    // print(day);
     return DefaultTabController(
       initialIndex: day,
       length: 5,
@@ -44,7 +49,7 @@ class _TimeTableState extends State<TimeTable>
           backgroundColorStart: gradientAppbarStart,
           backgroundColorEnd: gradientAppbarEnd,
           bottom: TabBar(
-            indicatorWeight: 5,
+            indicatorWeight: 2,
             indicatorColor: Colors.white,
             tabs: [
               Tab(
@@ -77,11 +82,11 @@ class _TimeTableState extends State<TimeTable>
               ),
           child: TabBarView(
             children: [
-              schedule(timeTable[0], 0, gradientAppbarStart, gradientAppbarEnd),
-              schedule(timeTable[1], 1, gradientAppbarStart, gradientAppbarEnd),
-              schedule(timeTable[2], 2, gradientAppbarStart, gradientAppbarEnd),
-              schedule(timeTable[3], 3, gradientAppbarStart, gradientAppbarEnd),
-              schedule(timeTable[4], 4, gradientAppbarStart, gradientAppbarEnd),
+              schedule(timeTable[0], 0, gradientCircleStart, gradientCircleEnd),
+              schedule(timeTable[1], 1, gradientCircleStart, gradientCircleEnd),
+              schedule(timeTable[2], 2, gradientCircleStart, gradientCircleEnd),
+              schedule(timeTable[3], 3, gradientCircleStart, gradientCircleEnd),
+              schedule(timeTable[4], 4, gradientCircleStart, gradientCircleEnd),
             ],
           ),
         ),
@@ -122,7 +127,7 @@ Widget schedule(timetable, day, gradientAppbarStart, gradientAppbarEnd) {
     listofperiods.add(
       Container(
           margin: EdgeInsets.fromLTRB(10, 0, 15, 2),
-          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 3.0),
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,

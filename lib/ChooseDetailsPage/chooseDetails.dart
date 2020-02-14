@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-var maincolor=Colors.indigo;
+var maincolor=Colors.blue;
 
 class ChooseDetails extends StatefulWidget {
   @override
@@ -50,7 +50,7 @@ class _ChooseDetailsState extends State<ChooseDetails> {
       } catch (_) {}
 
       cached = 1;
-      print('Details Obtained');
+      print('Stored Details Obtained');
     }
 
     if (cached == 0) getDetailsFromStorage();
