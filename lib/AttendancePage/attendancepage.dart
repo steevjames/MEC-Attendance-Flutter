@@ -212,8 +212,8 @@ class _AttendancePageState extends State<AttendancePage> {
           Navigator.pushReplacementNamed(
               context, '/choose'); // return true if the route to be popped
         else
-          Navigator.pushReplacementNamed(context, '/attendance');
-        // return true;
+          // Navigator.pushReplacementNamed(context, '/attendance');
+        return true;
         return false;
       },
       child: MaterialApp(

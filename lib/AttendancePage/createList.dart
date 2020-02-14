@@ -71,15 +71,9 @@ returnsList(
       luday = int.parse(lastupdated.substring(0, 2));
       lumonth = int.parse(lastupdated.substring(3, 5));
       luyear = int.parse(lastupdated.substring(6, 10));
-      print(luday.toString() +
-          ' : ' +
-          lumonth.toString() +
-          ' : ' +
-          luyear.toString());
       var now = new DateTime.now();
       var dateupdated = new DateTime.utc(luyear, lumonth, luday);
       difference = now.difference(dateupdated).inDays;
-      print(difference);
     } catch (_) {}
     var lastupdatedstring = difference == -1
         ? subjectAndLastUpdated[i][1]
