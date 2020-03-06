@@ -36,6 +36,8 @@ class _ChooseDetailsState extends State<ChooseDetails> {
 
   @override
   Widget build(BuildContext context) {
+
+    // Gets stored class & Sem for easier lookup
     getDetailsFromStorage() async {
       SharedPreferences pref = await SharedPreferences.getInstance();
       oldSem = pref.getInt('oldSem');

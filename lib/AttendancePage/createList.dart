@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-returnsList(
+
+// This function uses created data and makes a list of widgets, each corresponding to a subject.
+// This data is shown as the attendane information
+returnListOfAttendanceInfo(
     studentattendance,
     subjectAndLastUpdated,
     length,
@@ -49,12 +52,15 @@ returnsList(
     // Getting Subject Name
     var subname = subjectAndLastUpdated[i][0].toString();
     var subarray = subname.split(' ');
+    // If first word of subject name contains numbers, its propably the course code so removes it.
     if (subarray[0].contains('0') ||
         subarray[0].contains('1') ||
         subarray[0].contains('2') ||
         subarray[0].contains('3') ||
         subarray[0].contains('4')) subarray.removeAt(0);
     subname = subarray.join(' ');
+
+    // Tries to convert student name to Lowercase.
     try {
       subname = subname
           .trim()
@@ -66,6 +72,9 @@ returnsList(
     // print(subname);
     //Convert date to no of days
     var lastupdated = subjectAndLastUpdated[i][1];
+
+    // Takes last updated value, splits to day, month & year.
+    // Takes device date & finds difference in number of days.
     int luday, lumonth, luyear, difference = -1;
     try {
       luday = int.parse(lastupdated.substring(0, 2));
@@ -75,10 +84,15 @@ returnsList(
       var dateupdated = new DateTime.utc(luyear, lumonth, luday);
       difference = now.difference(dateupdated).inDays;
     } catch (_) {}
-    var lastupdatedstring = difference == -1
-        ? subjectAndLastUpdated[i][1]
-        : difference.toString() + ' Days Ago';
+    // Sets Last Updated
+    var lastupdatedstring;
+    if (difference==0) lastupdatedstring='Today';
+    else if (difference==1) lastupdatedstring='Yesterday';
+    else if (difference==-999) lastupdatedstring=subjectAndLastUpdated[i][1];
+    else lastupdatedstring= difference.toString() + ' Days Ago';
 
+
+    // Returns the small thing to display data in popup
     Widget _popupElement(t1, t2) {
       return Container(
         decoration: BoxDecoration(
@@ -119,8 +133,11 @@ returnsList(
           ],
         ),
       );
-    }
+    } // End of the popup element
 
+
+// Each list Item starts here............
+// Change here to change how the details of subjects change.
     widgetList.add(
       InkWell(
         onTap: () {
