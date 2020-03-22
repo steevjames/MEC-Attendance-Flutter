@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-var maincolor=Colors.blue;
+var maincolor = Colors.blue;
 
 class ChooseDetails extends StatefulWidget {
   @override
@@ -11,11 +11,16 @@ class ChooseDetails extends StatefulWidget {
 }
 
 class _ChooseDetailsState extends State<ChooseDetails> {
+  @override
+  void initState() {
+    getDetailsFromStorage();
+    super.initState();
+  }
+
   int _radioValue = 0;
   int _radioValue2 = 1;
   int _rollno = 0;
   int cached = 0;
-
 
   var oldSem;
   var oldBranch;
@@ -34,28 +39,26 @@ class _ChooseDetailsState extends State<ChooseDetails> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
+  getDetailsFromStorage() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    oldSem = pref.getInt('oldSem');
+    oldBranch = pref.getInt('oldBranch');
 
-    // Gets stored class & Sem for easier lookup
-    getDetailsFromStorage() async {
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      oldSem = pref.getInt('oldSem');
-      oldBranch = pref.getInt('oldBranch');
-
-      try {
-        if(oldSem<=5 && oldSem >=0 && oldBranch>=1 && oldBranch <=8)
+    try {
+      if (oldSem <= 5 && oldSem >= 0 && oldBranch >= 1 && oldBranch <= 8)
         setState(() {
           _radioValue = oldSem % 6;
           _radioValue2 = oldBranch % 9;
         });
-      } catch (_) {}
+    } catch (_) {}
 
-      cached = 1;
-      print('Stored Details Obtained');
-    }
+    cached = 1;
+    print('Stored Details Obtained');
+  }
 
-    if (cached == 0) getDetailsFromStorage();
+  @override
+  Widget build(BuildContext context) {
+    // Gets stored class & Sem for easier lookup
 
     return Scaffold(
       body: Container(

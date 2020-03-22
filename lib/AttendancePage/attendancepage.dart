@@ -17,7 +17,12 @@ class AttendancePage extends StatefulWidget {
 }
 
 class _AttendancePageState extends State<AttendancePage> {
-  var cached = 0;
+  @override
+  void initState() {
+    getDetailsFromStorage();
+    super.initState();
+  }
+
   var rollno = 0;
   var classname = '';
   var studname = "Attendance";
@@ -25,6 +30,10 @@ class _AttendancePageState extends State<AttendancePage> {
   var noOfClassesList = [];
   var subjectAndLastUpdated;
   var noOfSubjects;
+  // It will store attendance percentages.
+  var studentattendance = [];
+  // Wether to go back on back button press
+  var goback = 0;
 
   // Update Colors here to change app theme.
   // App has to be restarted or page has to be reloaded to take effect.
@@ -57,10 +66,6 @@ class _AttendancePageState extends State<AttendancePage> {
               valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
             )))
   ];
-
-  // It will store attendance percentages.
-  var studentattendance = [];
-  var goback = 0;
 
   // Fetch Data from the Site
   getData() async {
@@ -105,11 +110,6 @@ class _AttendancePageState extends State<AttendancePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (cached == 0) {
-      cached = 1;
-      getDetailsFromStorage();
-    }
-
     return WillPopScope(
       onWillPop: () async {
         // Controls Back Button
@@ -118,7 +118,7 @@ class _AttendancePageState extends State<AttendancePage> {
               context, '/choose'); // return true if the route to be popped
         else
           // Navigator.pushReplacementNamed(context, '/attendance');
-        return true;
+          return true;
         return false;
       },
       child: MaterialApp(
@@ -212,9 +212,8 @@ class _AttendancePageState extends State<AttendancePage> {
     );
   }
 
-
 // This function switches the loading thing with the attendance.
-    getAttendanceFeed() {
+  getAttendanceFeed() {
     setState(() {
       mainElement = <Widget>[];
       mainElement = returnListOfAttendanceInfo(
@@ -330,8 +329,6 @@ class _AttendancePageState extends State<AttendancePage> {
     // print(studentattendance);
     // print(subjectAndLastUpdated);
   }
-
-
 }
 
 _launchURL(url) async {
