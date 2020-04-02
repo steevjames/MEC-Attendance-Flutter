@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 // Loading Page Gradient
-var gradient1 = Colors.indigo;
-var gradient2 = Colors.cyan;
+var gradient1 = Color(0xff2c9fc0);
+var gradient2 = Color(0xff3464BB);
 
 class Redirect extends StatefulWidget {
   Redirect();
@@ -24,11 +23,16 @@ class _RedirectState extends State<Redirect> {
       Navigator.pushReplacementNamed(context, '/attendance');
   }
 
-  Widget build(BuildContext context) {
+  @override
+  void initState() {
     Future.delayed(const Duration(milliseconds: 500), () {
       getDetailsFromStorage();
     });
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: Container(
         decoration: BoxDecoration(

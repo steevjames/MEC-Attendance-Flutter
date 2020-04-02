@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import '../Widgets/widgets.dart';
 
 class TimeTable extends StatefulWidget {
   final List<dynamic> tt;
@@ -8,6 +9,7 @@ class TimeTable extends StatefulWidget {
   final gradientAppbarEnd;
   final gradientCircleStart;
   final gradientCircleEnd;
+  final fontName;
 
   const TimeTable(
       {Key key,
@@ -16,7 +18,8 @@ class TimeTable extends StatefulWidget {
       this.gradientAppbarStart,
       this.gradientAppbarEnd,
       this.gradientCircleStart,
-      this.gradientCircleEnd})
+      this.gradientCircleEnd,
+      this.fontName})
       : super(key: key);
 
   @override
@@ -31,8 +34,9 @@ class _TimeTableState extends State<TimeTable>
     var classname = widget.classname;
     var gradientAppbarStart = widget.gradientAppbarStart;
     var gradientAppbarEnd = widget.gradientAppbarEnd;
-    var gradientCircleStart = widget.gradientCircleStart;
-    var gradientCircleEnd = widget.gradientCircleEnd;
+    var gradientCircleEnd = widget.gradientCircleStart;
+    var gradientCircleStart = widget.gradientCircleEnd;
+    var fontName = widget.fontName;
     // print(timeTable);
     DateTime date = DateTime.now();
     // 1 is Monday and 7 is Sunday.
@@ -44,32 +48,39 @@ class _TimeTableState extends State<TimeTable>
       initialIndex: day,
       length: 5,
       child: Scaffold(
-        backgroundColor: Color(0xFFdddddd),
+        backgroundColor: Color(0xFFeeeeee),
         appBar: GradientAppBar(
           backgroundColorStart: gradientAppbarStart,
           backgroundColorEnd: gradientAppbarEnd,
           bottom: TabBar(
-            indicatorWeight: 2,
+            labelStyle: TextStyle(fontFamily: fontName),
+            indicatorWeight: 3,
             indicatorColor: Colors.white,
             tabs: [
               Tab(
-                text: 'MON',
+                text: 'Mon',
               ),
               Tab(
-                text: 'TUE',
+                text: 'Tue',
               ),
               Tab(
-                text: 'WED',
+                text: 'Wed',
               ),
               Tab(
-                text: 'THU',
+                text: 'Thu',
               ),
               Tab(
-                text: 'FRI',
+                text: 'Fri',
               ),
             ],
           ),
-          title: Text(classname + ' Time Table'),
+          title: FadeIn(
+            .3,
+            Text(
+              classname + ' Timetable',
+              style: TextStyle(fontFamily: fontName),
+            ),
+          ),
           centerTitle: true,
         ),
         body: Container(
@@ -82,11 +93,16 @@ class _TimeTableState extends State<TimeTable>
               ),
           child: TabBarView(
             children: [
-              schedule(timeTable[0], 0, gradientCircleStart, gradientCircleEnd),
-              schedule(timeTable[1], 1, gradientCircleStart, gradientCircleEnd),
-              schedule(timeTable[2], 2, gradientCircleStart, gradientCircleEnd),
-              schedule(timeTable[3], 3, gradientCircleStart, gradientCircleEnd),
-              schedule(timeTable[4], 4, gradientCircleStart, gradientCircleEnd),
+              schedule(timeTable[0], 0, gradientCircleStart, gradientCircleEnd,
+                  fontName),
+              schedule(timeTable[1], 1, gradientCircleStart, gradientCircleEnd,
+                  fontName),
+              schedule(timeTable[2], 2, gradientCircleStart, gradientCircleEnd,
+                  fontName),
+              schedule(timeTable[3], 3, gradientCircleStart, gradientCircleEnd,
+                  fontName),
+              schedule(timeTable[4], 4, gradientCircleStart, gradientCircleEnd,
+                  fontName),
             ],
           ),
         ),
@@ -98,7 +114,8 @@ class _TimeTableState extends State<TimeTable>
 var cached = [0, 0, 0, 0, 0, 0, 0];
 
 // Here Timetable is list of periods that day.
-Widget schedule(timetable, day, gradientAppbarStart, gradientAppbarEnd) {
+Widget schedule(
+    timetable, day, gradientAppbarStart, gradientAppbarEnd, fontName) {
   // print(timetable);
   var ttcopy = []..addAll(timetable);
   // var ttcopy = timetable;
@@ -125,61 +142,78 @@ Widget schedule(timetable, day, gradientAppbarStart, gradientAppbarEnd) {
 
   for (int i = 0; i < ttcopy.length; i++) {
     listofperiods.add(
-      Container(
-          margin: EdgeInsets.fromLTRB(10, 0, 15, 2),
-          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 3.0),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(100),
-                bottomLeft: Radius.circular(100),
-                topRight: Radius.circular(40),
-                bottomRight: Radius.circular(40),
+      FadeIn(
+        i / 6.0+.2,
+        Container(
+            margin: EdgeInsets.fromLTRB(10, 0, 15, 2),
+            padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 3.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xffaaaaaa),
+                    blurRadius: 3.0,
+                    spreadRadius: -1.0,
+                    // offset: Offset(
+                    //   2.0,
+                    //   2.0,
+                    // ),
+                  )
+                ],
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(100),
+                  bottomLeft: Radius.circular(100),
+                  topRight: Radius.circular(40),
+                  bottomRight: Radius.circular(40),
+                ),
               ),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                // Period Number
-                Container(
-                    margin: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                    width: 50.0,
-                    height: 50.0,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color(0xFF19AAD5),
-                      gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.topRight,
-                          stops: [0.1, 0.9],
-                          colors: [gradientAppbarStart, gradientAppbarEnd]),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  // Period Number
+                  Container(
+                      margin: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                      width: 50.0,
+                      height: 50.0,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xFF19AAD5),
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.topRight,
+                            stops: [0.1, 0.9],
+                            colors: [gradientAppbarStart, gradientAppbarEnd]),
+                      ),
+                      child: Center(
+                          child: Text((i + 1).toString(),
+                              style: TextStyle(
+                                  fontSize: 17,
+                                  fontFamily: fontName,
+                                  color: Colors.white)))),
+                  //Time Table Value
+                  Expanded(
+                    child: Container(
+                      // margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10.0)),
+                      child: Text(
+                        ttcopy[i],
+                        style: TextStyle(
+                            fontSize: 14.5,
+                            fontFamily: fontName,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF555555)),
+                      ),
                     ),
-                    child: Center(
-                        child: Text((i + 1).toString(),
-                            style:
-                                TextStyle(fontSize: 17, color: Colors.white)))),
-                //Time Table Value
-                Expanded(
-                  child: Container(
-                    // margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
-                    padding:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.0)),
-                    child: Text(
-                      ttcopy[i],
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF555555)),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          )),
+                  )
+                ],
+              ),
+            )),
+      ),
     );
   }
 
@@ -189,7 +223,7 @@ Widget schedule(timetable, day, gradientAppbarStart, gradientAppbarEnd) {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
             SizedBox(
-              height: 40.0,
+              height: 25.0,
             ),
           ] +
           listofperiods +

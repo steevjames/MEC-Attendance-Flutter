@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../Widgets/widgets.dart';
 
-var maincolor = Colors.blue;
+var maincolor = Color(0xFF2680C1);
 
 class ChooseDetails extends StatefulWidget {
   @override
@@ -73,11 +74,14 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                   key: _formKey,
                   child: Column(
                     children: <Widget>[
-                      Image.asset(
-                        'assets/mec.png',
-                        height: 130.0,
-                        color: maincolor,
-                        // width: 200.0,
+                      FadeIn(
+                        .3,
+                        Image.asset(
+                          'assets/mec.png',
+                          height: 130.0,
+                          color: maincolor,
+                          // width: 200.0,
+                        ),
                       ),
                       Container(
                         child: Column(
@@ -85,76 +89,88 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                             SizedBox(
                               height: 20.0,
                             ),
-                            Text(
-                              'Choose Class :',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                            FadeIn(
+                              .8,
+                              Text(
+                                'Choose Class :',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
                             ),
-                            _selectClass(),
+                            FadeIn(.8, _selectClass()),
                             SizedBox(
                               height: 20.0,
                             ),
-                            Text(
-                              'Choose Semester : ',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                            FadeIn(
+                              1.3,
+                              Text(
+                                'Choose Semester : ',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
                             ),
-                            _selectSemester(),
+                            FadeIn(1.3, _selectSemester()),
                             SizedBox(
                               height: 15.0,
                             ),
-                            Container(
-                              width: 220.0,
-                              child: TextFormField(
-                                maxLength: 2,
-                                validator: (String value) {
-                                  final n = num.tryParse(value);
-                                  if (n == null || n < 0) {
-                                    return 'Input is not a valid Roll Number';
-                                  }
-                                  _rollno = n;
-                                  return null;
-                                },
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  hintText: 'Roll No.',
-                                  icon: Icon(Icons.event),
+                            FadeIn(
+                              1.8,
+                              Container(
+                                width: 220.0,
+                                child: TextFormField(
+                                  maxLength: 2,
+                                  validator: (String value) {
+                                    final n = num.tryParse(value);
+                                    if (n == null || n < 0) {
+                                      return 'Input is not a valid Roll Number';
+                                    }
+                                    _rollno = n;
+                                    return null;
+                                  },
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    hintText: 'Roll No.',
+                                    icon: Icon(Icons.event),
+                                  ),
                                 ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      RaisedButton(
-                        padding: EdgeInsets.symmetric(horizontal: 30.0),
-                        color: maincolor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(15.0)),
-                        child: Text(
-                          'SUBMIT',
-                          style: TextStyle(color: Colors.white),
+                      FadeIn(
+                        2.1,
+                        RaisedButton(
+                          padding: EdgeInsets.symmetric(horizontal: 30.0),
+                          color: maincolor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(15.0)),
+                          child: Text(
+                            'SUBMIT',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onPressed: () {
+                            if (!_formKey.currentState.validate()) {
+                              return;
+                            }
+                            var cls = makeClassString();
+
+                            // Saves Details - it is used to load attendance page each time.
+                            saveDetails() async {
+                              SharedPreferences pref =
+                                  await SharedPreferences.getInstance();
+                              pref.setString('class', cls);
+                              pref.setString('rollno', _rollno.toString());
+                              pref.remove('timetable');
+
+                              // Setting the selection to show when this page is again visited.
+                              pref.setInt('oldSem', _radioValue);
+                              pref.setInt('oldBranch', _radioValue2);
+                              Navigator.pushReplacementNamed(
+                                  context, '/attendance');
+                            }
+
+                            saveDetails();
+                          },
                         ),
-                        onPressed: () {
-                          if (!_formKey.currentState.validate()) {
-                            return;
-                          }
-                          var cls = makeClassString();
-
-                          // Saves Details - it is used to load attendance page each time.
-                          saveDetails() async {
-                            SharedPreferences pref =
-                                await SharedPreferences.getInstance();
-                            pref.setString('class', cls);
-                            pref.setString('rollno', _rollno.toString());
-                            pref.remove('timetable');
-
-                            // Setting the selection to show when this page is again visited.
-                            pref.setInt('oldSem', _radioValue);
-                            pref.setInt('oldBranch', _radioValue2);
-                            Navigator.pushReplacementNamed(
-                                context, '/attendance');
-                          }
-
-                          saveDetails();
-                        },
                       ),
                     ],
                   ),
@@ -168,7 +184,7 @@ class _ChooseDetailsState extends State<ChooseDetails> {
   Widget _selectClass() {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(width: 1.5, color: maincolor),
+        border: Border.all(width: 1.2, color: maincolor),
         // borderRadius: BorderRadius.circular(10.0),
       ),
       margin: EdgeInsets.all(5.0),
@@ -228,7 +244,7 @@ class _ChooseDetailsState extends State<ChooseDetails> {
   Widget _selectSemester() {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(width: 1.5, color: maincolor),
+        border: Border.all(width: 1.2, color: maincolor),
         // borderRadius: BorderRadius.circular(10.0),
       ),
       margin: EdgeInsets.all(5.0),

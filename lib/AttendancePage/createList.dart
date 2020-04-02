@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-
+// import 'package:mec_attendance/redirection.dart';yy
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import '../Widgets/widgets.dart';
 
 // This function uses created data and makes a list of widgets, each corresponding to a subject.
 // This data is shown as the attendane information
@@ -12,6 +14,7 @@ returnListOfAttendanceInfo(
     gradientWhenUnder2,
     attendaneGradient1,
     attendaneGradient2,
+    fontName,
     context) {
   // print(noOfClassesList);
   var widgetList = <Widget>[];
@@ -86,11 +89,14 @@ returnListOfAttendanceInfo(
     } catch (_) {}
     // Sets Last Updated
     var lastupdatedstring;
-    if (difference==0) lastupdatedstring='Today';
-    else if (difference==1) lastupdatedstring='Yesterday';
-    else if (difference==-999) lastupdatedstring=subjectAndLastUpdated[i][1];
-    else lastupdatedstring= difference.toString() + ' Days Ago';
-
+    if (difference == 0)
+      lastupdatedstring = 'Today';
+    else if (difference == 1)
+      lastupdatedstring = 'Yesterday';
+    else if (difference == -999)
+      lastupdatedstring = subjectAndLastUpdated[i][1];
+    else
+      lastupdatedstring = difference.toString() + ' Days Ago';
 
     // Returns the small thing to display data in popup
     Widget _popupElement(t1, t2) {
@@ -124,23 +130,64 @@ returnListOfAttendanceInfo(
           children: <Widget>[
             Text(
               t1,
-              style: TextStyle(color: Colors.white, fontSize: 12),
+              style: TextStyle(
+                  fontFamily: fontName, color: Colors.white, fontSize: 12),
             ),
             Text(
               t2,
-              style: TextStyle(color: Colors.white, fontSize: 12),
+              style: TextStyle(
+                  fontFamily: fontName, color: Colors.white, fontSize: 12),
             ),
           ],
         ),
       );
     } // End of the popup element
 
+// Percentage Indicator
+    Widget percentIndicator() {
+      return Container(
+        margin: EdgeInsets.fromLTRB(10, 5, 7, 5),
+        child: CircularPercentIndicator(
+          radius: 78.0,
+          lineWidth: 1.3,
+          percent: attendance / 100,
+          center: Text(
+            attn.toString(),
+            style: TextStyle(fontFamily: fontName, fontSize: 16),
+          ),
+          circularStrokeCap: CircularStrokeCap.round,
+          reverse: true,
+          animation: true,
+          animationDuration: 2000,
+          backgroundColor: Color(0x11000000),
+          maskFilter: MaskFilter.blur(BlurStyle.solid, 0),
+          linearGradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              (attendance >= 75 ||
+                      (attendance == 0 && totalNoOfClasses == 0) ||
+                      elective == 1)
+                  ? attendaneGradient1
+                  : gradientWhenUnder1,
+              (attendance >= 75 ||
+                      (attendance == 0 && totalNoOfClasses == 0) ||
+                      elective == 1)
+                  ? attendaneGradient2
+                  : gradientWhenUnder2,
+            ],
+          ),
+        ),
+      );
+    } // End of Percentage Indicator
 
 // Each list Item starts here............
 // Change here to change how the details of subjects change.
+
     widgetList.add(
       InkWell(
         onTap: () {
+          // When a card is presses, The following pop up comes up.
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -150,13 +197,16 @@ returnListOfAttendanceInfo(
                 title: Text(
                   subname,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.black54, shadows: [
-                    BoxShadow(
-                      color: Color(0x88000000),
-                      blurRadius: 2.0,
-                      spreadRadius: 0.0,
-                    )
-                  ]),
+                  style: TextStyle(
+                      color: Colors.black54,
+                      fontFamily: fontName,
+                      shadows: [
+                        BoxShadow(
+                          color: Color(0x88000000),
+                          blurRadius: 0.0,
+                          spreadRadius: 0.0,
+                        )
+                      ]),
                 ),
                 content: SingleChildScrollView(
                   child: Column(
@@ -164,55 +214,46 @@ returnListOfAttendanceInfo(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Center(
-                        child: Container(
-                          margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                          width: 75.0,
-                          height: 75.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(0xFF555555),
-                                blurRadius: 2.0,
-                                spreadRadius: 0.0,
-                              )
-                            ],
-                          ),
-                          child: Center(
-                              child: Text(
-                            attn.toString(),
-                            style: TextStyle(fontSize: 17, shadows: [
-                              BoxShadow(
-                                color: Color(0x88000000),
-                                blurRadius: 2.0,
-                                spreadRadius: 0.0,
-                              )
-                            ]),
-                          )),
-                        ),
+                        child: percentIndicator(),
                       ),
-                      _popupElement('Classes Attended',
-                          ': ' + attented.toStringAsFixed(0)),
-                      _popupElement('Total No. of Classes',
-                          ': ' + totalNoOfClasses.toString()),
-                      _popupElement('Last Updated', lastupdatedstring),
-                      _popupElement('Updated Date', subjectAndLastUpdated[i][1]),
+                      FadeIn(
+                        0.3,
+                        _popupElement('Classes Attended',
+                            ': ' + attented.toStringAsFixed(0)),
+                      ),
+                      FadeIn(
+                        0.5,
+                        _popupElement('Total No. of Classes',
+                            ': ' + totalNoOfClasses.toString()),
+                      ),
+                      FadeIn(
+                        0.7,
+                        _popupElement('Last Updated', lastupdatedstring),
+                      ),
+                      FadeIn(
+                        0.9,
+                        _popupElement(
+                            'Updated Date', subjectAndLastUpdated[i][1]),
+                      ),
                       SizedBox(height: 10),
-                      Center(
-                          child: Text(
-                        canCutText,
-                        style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 12,
-                            shadows: [
-                              BoxShadow(
-                                color: Color(0x88000000),
-                                blurRadius: 2.0,
-                                spreadRadius: 0.0,
-                              )
-                            ]),
-                      )),
+                      FadeIn(
+                        1.1,
+                        Center(
+                            child: Text(
+                          canCutText,
+                          style: TextStyle(
+                              fontFamily: fontName,
+                              color: Colors.black54,
+                              fontSize: 12,
+                              shadows: [
+                                BoxShadow(
+                                  color: Color(0x88000000),
+                                  blurRadius: 1.0,
+                                  spreadRadius: 0.0,
+                                )
+                              ]),
+                        )),
+                      ),
                     ],
                   ),
                 ),
@@ -221,6 +262,7 @@ returnListOfAttendanceInfo(
                     child: Text(
                       "Close",
                       style: TextStyle(
+                          fontFamily: fontName,
                           color: attendaneGradient2,
                           fontSize: 12,
                           shadows: [
@@ -240,136 +282,111 @@ returnListOfAttendanceInfo(
             },
           );
         },
-        child: Container(
-            padding: EdgeInsets.fromLTRB(10, 10, 5, 5),
-            margin: EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15.0),
-              // gradient: LinearGradient(
-              //     begin: Alignment.topRight,
-              //     end: Alignment.bottomLeft,
-              //     stops: [0.1, 0.9],
-              //     colors: [Colors.indigo, Colors.cyan]),
-            ),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(left: 10),
-                          child: Text(
-                            subname,
-                            style: TextStyle(
-                                color: Color(0xFF555555), fontSize: 17.0),
-                          ),
-                        ),
-
-                        // The line under subject title.
-                        Container(
-                          color: Colors.grey,
-                          height: 1,
-                          // height: .1,
-                          width: 500,
-                          margin: EdgeInsets.only(
-                              left: 10, right: 5, top: 5, bottom: 5),
-                        ),
-
-                        //Have to Attend / Cut
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Container(
-                              // margin: EdgeInsets.only(left: 10.0),
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 5.0, horizontal: 10.0),
-                              decoration: BoxDecoration(
-                                // color: Color(0xFF2680C1),
-                                borderRadius: BorderRadius.circular(50.0),
-                                gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    stops: [
-                                      0.1,
-                                      0.9
-                                    ],
-                                    colors: [
-                                      (attendance >= 75 ||
-                                              (attendance == 0 &&
-                                                  totalNoOfClasses == 0) ||
-                                              elective == 1)
-                                          ? attendaneGradient1 //Blue Left
-                                          : gradientWhenUnder1, // Red
-                                      (attendance >= 75 ||
-                                              (attendance == 0 &&
-                                                  totalNoOfClasses == 0) ||
-                                              elective == 1)
-                                          ? attendaneGradient2 // Blue Right
-                                          : gradientWhenUnder2,
-                                    ]),
-                              ),
-                              child: Text(
-                                canCutText,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 12),
-                                textAlign: TextAlign.center,
-                              ),
+        child: FadeIn(
+          i / 2.0,
+          Container(
+              padding: EdgeInsets.fromLTRB(10, 10, 5, 5),
+              margin: EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15.0),
+                // gradient: LinearGradient(
+                //     begin: Alignment.topRight,
+                //     end: Alignment.bottomLeft,
+                //     stops: [0.1, 0.9],
+                //     colors: [Colors.indigo, Colors.cyan]),
+              ),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(left: 10),
+                            child: Text(
+                              subname,
+                              style: TextStyle(
+                                  fontFamily: fontName,
+                                  color: Color(0xFF555555),
+                                  fontSize: 16.0),
                             ),
-                          ],
-                        ),
-
-                        SizedBox(
-                          height: 3,
-                        ),
-
-                        //Last Updated
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 5.0, horizontal: 10.0),
-                          child: Text(
-                            'Last Updated : ' + lastupdatedstring,
-                            // subjectAndLastUpdated[i][1],
-                            style: TextStyle(
-                              color: Color(0xFF777777),
-                              fontSize: 12,
-                            ),
-                            // textAlign: TextAlign.center,
                           ),
-                        ),
-                      ]),
-                ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(10, 5, 7, 5),
-                  width: 75.0,
-                  height: 75.0,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color(0xFF555555),
-                        blurRadius: 4,
-                        spreadRadius: -2.0,
-                      )
-                    ],
+
+                          // The line under subject title.
+                          SizedBox(height: 10),
+
+                          //Have to Attend / Cut
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              Container(
+                                // margin: EdgeInsets.only(left: 10.0),
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 5.0, horizontal: 10.0),
+                                decoration: BoxDecoration(
+                                  // color: Color(0xFF2680C1),
+                                  borderRadius: BorderRadius.circular(50.0),
+                                  gradient: LinearGradient(
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                      stops: [
+                                        0.1,
+                                        0.9
+                                      ],
+                                      colors: [
+                                        (attendance >= 75 ||
+                                                (attendance == 0 &&
+                                                    totalNoOfClasses == 0) ||
+                                                elective == 1)
+                                            ? attendaneGradient1 //Blue Left
+                                            : gradientWhenUnder1, // Red
+                                        (attendance >= 75 ||
+                                                (attendance == 0 &&
+                                                    totalNoOfClasses == 0) ||
+                                                elective == 1)
+                                            ? attendaneGradient2 // Blue Right
+                                            : gradientWhenUnder2,
+                                      ]),
+                                ),
+                                child: Text(
+                                  canCutText,
+                                  style: TextStyle(
+                                      fontFamily: fontName,
+                                      color: Colors.white,
+                                      fontSize: 12),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(
+                            height: 4,
+                          ),
+
+                          //Last Updated
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5.0, horizontal: 10.0),
+                            child: Text(
+                              'Last Updated : ' + lastupdatedstring,
+                              // subjectAndLastUpdated[i][1],
+                              style: TextStyle(
+                                fontFamily: fontName,
+                                color: Color(0xFF777777),
+                                fontSize: 12,
+                              ),
+                              // textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ]),
                   ),
-                  child: Center(
-                      child: Text(
-                    attn.toString(),
-                    style: TextStyle(fontSize: 17, shadows: [
-                      BoxShadow(
-                        color: Color(0x88000000),
-                        blurRadius: 2.0,
-                        spreadRadius: 0.0,
-                      )
-                    ]),
-                  )),
-                ),
-              ],
-            )),
+                  percentIndicator(),
+                ],
+              )),
+        ),
       ),
     );
   }

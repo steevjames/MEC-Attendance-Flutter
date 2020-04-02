@@ -30,6 +30,7 @@ class _AttendancePageState extends State<AttendancePage> {
   var noOfClassesList = [];
   var subjectAndLastUpdated;
   var noOfSubjects;
+  var fontName = 'default';
   // It will store attendance percentages.
   var studentattendance = [];
   // Wether to go back on back button press
@@ -41,7 +42,7 @@ class _AttendancePageState extends State<AttendancePage> {
   var gradientAppbarEnd = Colors.indigo;
 
   var attendaneGradient1 = Color(0xff1c9fc0);
-  var attendaneGradient2 = Color(0xff3057ac);
+  var attendaneGradient2 = Color(0xff3464BB);
 
   var gradientWhenUnder1 = Color(0xFF880000);
   var gradientWhenUnder2 = Color(0xFF880000);
@@ -63,6 +64,7 @@ class _AttendancePageState extends State<AttendancePage> {
             height: 70.0,
             width: 70.0,
             child: CircularProgressIndicator(
+              strokeWidth: 3,
               valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
             )))
   ];
@@ -118,7 +120,7 @@ class _AttendancePageState extends State<AttendancePage> {
               context, '/choose'); // return true if the route to be popped
         else
           // Navigator.pushReplacementNamed(context, '/attendance');
-          return true;
+        return true;
         return false;
       },
       child: MaterialApp(
@@ -145,15 +147,24 @@ class _AttendancePageState extends State<AttendancePage> {
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                   PopupMenuItem(
                     value: 1,
-                    child: Text('Report Bugs'),
+                    child: Text(
+                      'Report Bugs',
+                      style: TextStyle(fontFamily: fontName, fontSize: 14),
+                    ),
                   ),
                   PopupMenuItem(
                     value: 2,
-                    child: Text('View on Site'),
+                    child: Text(
+                      'View on Site',
+                      style: TextStyle(fontFamily: fontName, fontSize: 14),
+                    ),
                   ),
                   PopupMenuItem(
                     value: 3,
-                    child: Text('Rate'),
+                    child: Text(
+                      'Rate',
+                      style: TextStyle(fontFamily: fontName, fontSize: 14),
+                    ),
                   ),
                 ],
               )
@@ -164,9 +175,10 @@ class _AttendancePageState extends State<AttendancePage> {
               onPressed: onbackbutton,
             ),
             centerTitle: true,
+            // Title of page
             title: Text(
               studname,
-              style: TextStyle(fontSize: 19.0),
+              style: TextStyle(fontSize: 19.0, fontFamily: fontName),
             ),
             backgroundColorStart: gradientAppbarStart,
             backgroundColorEnd: gradientAppbarEnd,
@@ -174,6 +186,7 @@ class _AttendancePageState extends State<AttendancePage> {
 
           // Floating button pushes timetable page if time table has been loaded.
           floatingActionButton: FloatingActionButton(
+            tooltip: 'Timetable',
             onPressed: () {
               if (timeTable.length != 0)
                 Navigator.push(
@@ -185,7 +198,8 @@ class _AttendancePageState extends State<AttendancePage> {
                         gradientAppbarStart: gradientAppbarStart,
                         gradientAppbarEnd: gradientAppbarEnd,
                         gradientCircleStart: gradientTimetableCircleStart,
-                        gradientCircleEnd: gradientTimetableCircleEnd),
+                        gradientCircleEnd: gradientTimetableCircleEnd,
+                        fontName:fontName),
                   ),
                 );
             },
@@ -225,6 +239,7 @@ class _AttendancePageState extends State<AttendancePage> {
           gradientWhenUnder2,
           attendaneGradient1,
           attendaneGradient2,
+          fontName,
           context);
       if (studentattendance.length != 0) {
         // Convert Student Name To Title Case
