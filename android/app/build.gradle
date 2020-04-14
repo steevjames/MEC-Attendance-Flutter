@@ -1,3 +1,25 @@
+// Adding For OneSignal
+buildscript {
+    repositories {
+        // ...
+        maven { url 'https://plugins.gradle.org/m2/' } // Gradle Plugin Portal
+    }
+    dependencies {
+        // ...
+        // OneSignal-Gradle-Plugin
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.1, 0.99.99]'
+    }
+}
+
+repositories {
+    maven { url 'https://maven.google.com' }
+}
+
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+
+// One Signal End
+
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -45,6 +67,11 @@ android {
     }
 
     defaultConfig {
+        manifestPlaceholders = [
+            onesignal_app_id: '39dbd0e1-985e-4af9-98ad-764bc9caa73f',
+            // Project number pulled from dashboard, local value is ignored.
+            onesignal_google_project_number: 'REMOTE'
+        ]
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.mec.attendance"
         minSdkVersion 16
@@ -75,6 +102,7 @@ flutter {
 }
 
 dependencies {
+    implementation 'com.onesignal:OneSignal:[3.13.0, 3.99.99]' // One Signal
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'

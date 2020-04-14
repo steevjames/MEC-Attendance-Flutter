@@ -217,27 +217,27 @@ returnListOfAttendanceInfo(
                         child: percentIndicator(),
                       ),
                       FadeIn(
-                        0.3,
+                        0.2,
                         _popupElement('Classes Attended',
                             ': ' + attented.toStringAsFixed(0)),
                       ),
                       FadeIn(
-                        0.5,
+                        0.3,
                         _popupElement('Total No. of Classes',
                             ': ' + totalNoOfClasses.toString()),
                       ),
                       FadeIn(
-                        0.7,
+                        0.4,
                         _popupElement('Last Updated', lastupdatedstring),
                       ),
                       FadeIn(
-                        0.9,
+                        0.5,
                         _popupElement(
                             'Updated Date', subjectAndLastUpdated[i][1]),
                       ),
                       SizedBox(height: 10),
                       FadeIn(
-                        1.1,
+                        .7,
                         Center(
                             child: Text(
                           canCutText,
@@ -258,24 +258,27 @@ returnListOfAttendanceInfo(
                   ),
                 ),
                 actions: <Widget>[
-                  FlatButton(
-                    child: Text(
-                      "Close",
-                      style: TextStyle(
-                          fontFamily: fontName,
-                          color: attendaneGradient2,
-                          fontSize: 12,
-                          shadows: [
-                            BoxShadow(
-                              color: Color(0x885555ff),
-                              blurRadius: 2.0,
-                              spreadRadius: 0.0,
-                            )
-                          ]),
+                  FadeIn(
+                    .7,
+                    FlatButton(
+                      child: Text(
+                        "Close",
+                        style: TextStyle(
+                            fontFamily: fontName,
+                            color: attendaneGradient2,
+                            fontSize: 12,
+                            shadows: [
+                              BoxShadow(
+                                color: Color(0x885555ff),
+                                blurRadius: 2.0,
+                                spreadRadius: 0.0,
+                              )
+                            ]),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
                   ),
                 ],
               );
