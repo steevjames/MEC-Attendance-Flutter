@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
-import '../Widgets/widgets.dart';
+import '../Widgets/fadeIn.dart';
 
 class TimeTable extends StatefulWidget {
   final List<dynamic> tt;
@@ -75,8 +75,8 @@ class _TimeTableState extends State<TimeTable>
             ],
           ),
           title: FadeIn(
-            .3,
-            Text(
+            delay: .3,
+            child: Text(
               classname + ' Timetable',
               style: TextStyle(fontFamily: fontName),
             ),
@@ -143,8 +143,8 @@ Widget schedule(
   for (int i = 0; i < ttcopy.length; i++) {
     listofperiods.add(
       FadeIn(
-        i / 6.0 + .2,
-        Container(
+        delay: i / 6.0 + .2,
+        child: Container(
             margin: EdgeInsets.fromLTRB(10, 0, 15, 2),
             padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 3.0),
             child: Container(

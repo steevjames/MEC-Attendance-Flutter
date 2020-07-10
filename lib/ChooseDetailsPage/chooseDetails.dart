@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../Widgets/widgets.dart';
+import '../Widgets/fadeIn.dart';
 
 var maincolor = Color(0xFF2680C1);
 
@@ -75,8 +75,8 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                   child: Column(
                     children: <Widget>[
                       FadeIn(
-                        .3,
-                        Image.asset(
+                        delay: .3,
+                        child: Image.asset(
                           'assets/mec.png',
                           height: 130.0,
                           color: maincolor,
@@ -90,30 +90,30 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                               height: 20.0,
                             ),
                             FadeIn(
-                              .8,
-                              Text(
+                              delay: .8,
+                              child: Text(
                                 'Choose Class :',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                             ),
-                            FadeIn(.8, _selectClass()),
+                            FadeIn(delay: .8, child: _selectClass()),
                             SizedBox(
                               height: 20.0,
                             ),
                             FadeIn(
-                              1.3,
-                              Text(
+                              delay: 1.3,
+                              child: Text(
                                 'Choose Semester : ',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                             ),
-                            FadeIn(1.3, _selectSemester()),
+                            FadeIn(delay: 1.3, child: _selectSemester()),
                             SizedBox(
                               height: 15.0,
                             ),
                             FadeIn(
-                              1.8,
-                              Container(
+                              delay: 1.8,
+                              child: Container(
                                 width: 220.0,
                                 child: TextFormField(
                                   maxLength: 2,
@@ -137,8 +137,8 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                         ),
                       ),
                       FadeIn(
-                        2.1,
-                        RaisedButton(
+                        delay: 2.1,
+                        child: RaisedButton(
                           padding: EdgeInsets.symmetric(horizontal: 30.0),
                           color: maincolor,
                           shape: RoundedRectangleBorder(

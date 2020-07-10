@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:simple_animations/simple_animations.dart';
 
-
 class FadeIn extends StatelessWidget {
   final double delay;
   final Widget child;
 
-  FadeIn(this.delay, this.child);
+  FadeIn({@required this.delay, @required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +24,10 @@ class FadeIn extends StatelessWidget {
       tween: tween,
       child: child,
       builderWithChild: (context, child, animation) => Opacity(
-            opacity: animation["opacity"],
-            child: Transform.translate(
-                offset: Offset(animation["translateX"], 0), child: child),
-          ),
+        opacity: animation["opacity"],
+        child: Transform.translate(
+            offset: Offset(animation["translateX"], 0), child: child),
+      ),
     );
   }
 }

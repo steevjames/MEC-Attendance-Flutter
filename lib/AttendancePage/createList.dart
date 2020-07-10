@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:mec_attendance/redirection.dart';yy
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import '../Widgets/widgets.dart';
+import '../Widgets/fadeIn.dart';
 
 // This function uses created data and makes a list of widgets, each corresponding to a subject.
 // This data is shown as the attendane information
@@ -217,28 +217,28 @@ returnListOfAttendanceInfo(
                         child: percentIndicator(),
                       ),
                       FadeIn(
-                        0.2,
-                        _popupElement('Classes Attended',
+                        delay: 0.2,
+                        child: _popupElement('Classes Attended',
                             ': ' + attented.toStringAsFixed(0)),
                       ),
                       FadeIn(
-                        0.3,
-                        _popupElement('Total No. of Classes',
+                        delay: 0.3,
+                        child: _popupElement('Total No. of Classes',
                             ': ' + totalNoOfClasses.toString()),
                       ),
                       FadeIn(
-                        0.4,
-                        _popupElement('Last Updated', lastupdatedstring),
+                        delay: 0.4,
+                        child: _popupElement('Last Updated', lastupdatedstring),
                       ),
                       FadeIn(
-                        0.5,
-                        _popupElement(
+                        delay: 0.5,
+                        child: _popupElement(
                             'Updated Date', subjectAndLastUpdated[i][1]),
                       ),
                       SizedBox(height: 10),
                       FadeIn(
-                        .7,
-                        Center(
+                        delay: .7,
+                        child: Center(
                             child: Text(
                           canCutText,
                           style: TextStyle(
@@ -259,8 +259,8 @@ returnListOfAttendanceInfo(
                 ),
                 actions: <Widget>[
                   FadeIn(
-                    .7,
-                    FlatButton(
+                    delay: .7,
+                    child: FlatButton(
                       child: Text(
                         "Close",
                         style: TextStyle(
@@ -286,8 +286,8 @@ returnListOfAttendanceInfo(
           );
         },
         child: FadeIn(
-          i / 2.0,
-          Container(
+          delay: i / 2.0,
+          child: Container(
               padding: EdgeInsets.fromLTRB(10, 10, 5, 5),
               margin: EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
               decoration: BoxDecoration(
