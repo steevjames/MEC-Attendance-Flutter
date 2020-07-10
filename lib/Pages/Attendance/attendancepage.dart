@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './createList.dart';
+import 'Widgets/createList.dart';
 import 'package:beautifulsoup/beautifulsoup.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:http/http.dart' as http;
@@ -8,6 +8,7 @@ import '../Timetable/timetable.dart';
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
 import './convertdata.dart';
+import 'package:mec_attendance/Theme/theme.dart';
 
 class AttendancePage extends StatefulWidget {
   AttendancePage();
@@ -30,29 +31,11 @@ class _AttendancePageState extends State<AttendancePage> {
   var noOfClassesList = [];
   var subjectAndLastUpdated;
   var noOfSubjects;
-  var fontName = 'default';
+
   // It will store attendance percentages.
   var studentattendance = [];
   // Wether to go back on back button press
   var goback = 0;
-
-  // Update Colors here to change app theme.
-  // App has to be restarted or page has to be reloaded to take effect.
-  var gradientAppbarStart = Colors.cyan;
-  var gradientAppbarEnd = Colors.indigo;
-
-  var attendaneGradient1 = Color(0xff1c9fc0);
-  var attendaneGradient2 = Color(0xff3464BB);
-
-  var gradientWhenUnder1 = Color(0xFF880000);
-  var gradientWhenUnder2 = Color(0xFF880000);
-
-  var gradientTimetableCircleStart = Color(0xFF19AAD5);
-  var gradientTimetableCircleEnd = Color(0xFF2680C1);
-
-  var floatingButtonColor = Color(0xFF2c7ec4);
-
-  var pageBackgroundColor = Color(0xFFe7e7e7);
 
 // This variable stores loading circle which is repaced by attendance info.
   var mainElement = <Widget>[
@@ -60,13 +43,15 @@ class _AttendancePageState extends State<AttendancePage> {
       height: 100.0,
     ),
     Center(
-        child: SizedBox(
-            height: 70.0,
-            width: 70.0,
-            child: CircularProgressIndicator(
-              strokeWidth: 3,
-              valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
-            )))
+      child: SizedBox(
+        height: 70.0,
+        width: 70.0,
+        child: CircularProgressIndicator(
+          strokeWidth: 3,
+          valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
+        ),
+      ),
+    )
   ];
 
   // Fetch Data from the Site
@@ -230,17 +215,8 @@ class _AttendancePageState extends State<AttendancePage> {
   getAttendanceFeed() {
     setState(() {
       mainElement = <Widget>[];
-      mainElement = returnListOfAttendanceInfo(
-          studentattendance,
-          subjectAndLastUpdated,
-          noOfSubjects,
-          noOfClassesList,
-          gradientWhenUnder1,
-          gradientWhenUnder2,
-          attendaneGradient1,
-          attendaneGradient2,
-          fontName,
-          context);
+      mainElement = returnListOfAttendanceInfo(studentattendance,
+          subjectAndLastUpdated, noOfSubjects, noOfClassesList, context);
       if (studentattendance.length != 0) {
         // Convert Student Name To Title Case
         try {

@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:mec_attendance/Widgets/fadeIn.dart';
+import 'package:mec_attendance/Theme/theme.dart';
 
 // This function uses created data and makes a list of widgets, each corresponding to a subject.
 // This data is shown as the attendane information
-returnListOfAttendanceInfo(
-    studentattendance,
-    subjectAndLastUpdated,
-    length,
-    noOfClassesList,
-    gradientWhenUnder1,
-    gradientWhenUnder2,
-    attendaneGradient1,
-    attendaneGradient2,
-    fontName,
-    context) {
+returnListOfAttendanceInfo(studentattendance, subjectAndLastUpdated, length,
+    noOfClassesList, context) {
   // print(noOfClassesList);
   var widgetList = <Widget>[];
 
@@ -113,13 +105,13 @@ returnListOfAttendanceInfo(
                 (attendance >= 75 ||
                         (attendance == 0 && totalNoOfClasses == 0) ||
                         elective == 1)
-                    ? attendaneGradient1
-                    : gradientWhenUnder1,
+                    ? attendaneGradientStart
+                    : gradientWhenUnderStart,
                 (attendance >= 75 ||
                         (attendance == 0 && totalNoOfClasses == 0) ||
                         elective == 1)
-                    ? attendaneGradient2
-                    : gradientWhenUnder2,
+                    ? attendaneGradientEnd
+                    : gradientWhenUnderEnd,
               ]),
         ),
         margin: EdgeInsets.symmetric(vertical: 5),
@@ -167,13 +159,13 @@ returnListOfAttendanceInfo(
               (attendance >= 75 ||
                       (attendance == 0 && totalNoOfClasses == 0) ||
                       elective == 1)
-                  ? attendaneGradient1
-                  : gradientWhenUnder1,
+                  ? attendaneGradientStart
+                  : gradientWhenUnderStart,
               (attendance >= 75 ||
                       (attendance == 0 && totalNoOfClasses == 0) ||
                       elective == 1)
-                  ? attendaneGradient2
-                  : gradientWhenUnder2,
+                  ? attendaneGradientEnd
+                  : gradientWhenUnderEnd,
             ],
           ),
         ),
@@ -264,7 +256,7 @@ returnListOfAttendanceInfo(
                         "Close",
                         style: TextStyle(
                             fontFamily: fontName,
-                            color: attendaneGradient2,
+                            color: attendaneGradientEnd,
                             fontSize: 12,
                             shadows: [
                               BoxShadow(
@@ -342,14 +334,14 @@ returnListOfAttendanceInfo(
                                                 (attendance == 0 &&
                                                     totalNoOfClasses == 0) ||
                                                 elective == 1)
-                                            ? attendaneGradient1 //Blue Left
-                                            : gradientWhenUnder1, // Red
+                                            ? attendaneGradientStart //Blue Left
+                                            : gradientWhenUnderStart, // Red
                                         (attendance >= 75 ||
                                                 (attendance == 0 &&
                                                     totalNoOfClasses == 0) ||
                                                 elective == 1)
-                                            ? attendaneGradient2 // Blue Right
-                                            : gradientWhenUnder2,
+                                            ? attendaneGradientEnd // Blue Right
+                                            : gradientWhenUnderEnd,
                                       ]),
                                 ),
                                 child: Text(

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mec_attendance/NotificationHandler/notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-// Loading Page Gradient
-var gradient1 = Color(0xff2c9fc0);
-var gradient2 = Color(0xff3464BB);
+import 'package:mec_attendance/Theme/theme.dart';
 
 class Splashscreen extends StatefulWidget {
   @override
@@ -37,10 +34,11 @@ class _SplashscreenState extends State<Splashscreen> {
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              stops: [0.1, 0.9],
-              colors: [gradient1, gradient2]),
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            stops: [0.1, 0.9],
+            colors: [splashGradientStart, splashGradientEnd],
+          ),
         ),
         child: Center(
           child: Image(
