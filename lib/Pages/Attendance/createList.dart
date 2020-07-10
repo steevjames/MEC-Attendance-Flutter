@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:mec_attendance/redirection.dart';yy
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import '../Widgets/fadeIn.dart';
+import 'package:mec_attendance/Widgets/fadeIn.dart';
 
 // This function uses created data and makes a list of widgets, each corresponding to a subject.
 // This data is shown as the attendane information

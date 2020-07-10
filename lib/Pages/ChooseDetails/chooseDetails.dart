@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../Widgets/fadeIn.dart';
+import 'package:mec_attendance/Widgets/fadeIn.dart';
 
 var maincolor = Color(0xFF2680C1);
 

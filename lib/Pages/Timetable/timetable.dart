@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
-import '../Widgets/fadeIn.dart';
+import 'package:mec_attendance/Widgets/fadeIn.dart';
 
 class TimeTable extends StatefulWidget {
   final List<dynamic> tt;
