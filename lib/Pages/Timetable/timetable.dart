@@ -1,26 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:mec_attendance/Widgets/fadeIn.dart';
+import 'package:mec_attendance/Theme/theme.dart';
 
 class TimeTable extends StatefulWidget {
-  final List<dynamic> tt;
+  final List<dynamic> timeTable;
   final classname;
-  final gradientAppbarStart;
-  final gradientAppbarEnd;
-  final gradientCircleStart;
-  final gradientCircleEnd;
-  final fontName;
 
-  const TimeTable(
-      {Key key,
-      this.tt,
-      this.classname,
-      this.gradientAppbarStart,
-      this.gradientAppbarEnd,
-      this.gradientCircleStart,
-      this.gradientCircleEnd,
-      this.fontName})
-      : super(key: key);
+  TimeTable({this.timeTable, this.classname});
 
   @override
   _TimeTableState createState() => _TimeTableState();
@@ -30,13 +17,9 @@ class _TimeTableState extends State<TimeTable>
     with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    var timeTable = widget.tt;
+    var timeTable = widget.timeTable;
     var classname = widget.classname;
-    var gradientAppbarStart = widget.gradientAppbarStart;
-    var gradientAppbarEnd = widget.gradientAppbarEnd;
-    var gradientCircleEnd = widget.gradientCircleStart;
-    var gradientCircleStart = widget.gradientCircleEnd;
-    var fontName = widget.fontName;
+
     // print(timeTable);
     DateTime date = DateTime.now();
     // 1 is Monday and 7 is Sunday.
@@ -93,16 +76,11 @@ class _TimeTableState extends State<TimeTable>
               ),
           child: TabBarView(
             children: [
-              schedule(timeTable[0], 0, gradientCircleStart, gradientCircleEnd,
-                  fontName),
-              schedule(timeTable[1], 1, gradientCircleStart, gradientCircleEnd,
-                  fontName),
-              schedule(timeTable[2], 2, gradientCircleStart, gradientCircleEnd,
-                  fontName),
-              schedule(timeTable[3], 3, gradientCircleStart, gradientCircleEnd,
-                  fontName),
-              schedule(timeTable[4], 4, gradientCircleStart, gradientCircleEnd,
-                  fontName),
+              schedule(timetable: timeTable[0], day: 0),
+              schedule(timetable: timeTable[1], day: 1),
+              schedule(timetable: timeTable[2], day: 2),
+              schedule(timetable: timeTable[3], day: 3),
+              schedule(timetable: timeTable[4], day: 4),
             ],
           ),
         ),
@@ -114,11 +92,9 @@ class _TimeTableState extends State<TimeTable>
 var cached = [0, 0, 0, 0, 0, 0, 0];
 
 // Here Timetable is list of periods that day.
-Widget schedule(
-    timetable, day, gradientAppbarStart, gradientAppbarEnd, fontName) {
+Widget schedule({timetable, day}) {
   // print(timetable);
   var ttcopy = []..addAll(timetable);
-  // var ttcopy = timetable;
   List<Widget> listofperiods = [];
   ttcopy.removeAt(0);
 
@@ -155,10 +131,6 @@ Widget schedule(
                     color: Color(0xffaaaaaa),
                     blurRadius: 3.0,
                     spreadRadius: -1.0,
-                    // offset: Offset(
-                    //   2.0,
-                    //   2.0,
-                    // ),
                   )
                 ],
                 borderRadius: BorderRadius.only(
@@ -194,7 +166,6 @@ Widget schedule(
                   //Time Table Value
                   Expanded(
                     child: Container(
-                      // margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
                       padding:
                           EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
                       decoration: BoxDecoration(
@@ -217,7 +188,6 @@ Widget schedule(
     );
   }
 
-  // print(ttcopy);
   return SingleChildScrollView(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
