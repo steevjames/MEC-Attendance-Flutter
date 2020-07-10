@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mec_attendance/NotificationHandler/notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Loading Page Gradient
@@ -25,6 +26,7 @@ class _RedirectState extends State<Redirect> {
 
   @override
   void initState() {
+    setUpNotifications();
     Future.delayed(const Duration(milliseconds: 500), () {
       getDetailsFromStorage();
     });

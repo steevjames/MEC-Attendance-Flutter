@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import './ChooseDetailsPage/chooseDetails.dart';
 import './AttendancePage/attendancepage.dart';
 import './redirection.dart';
-import './NotificationHandler/notifications.dart';
 
 void main() {
   runApp(MyApp());
-  setUpNotifications();
 }
 
 class MyApp extends StatelessWidget {
