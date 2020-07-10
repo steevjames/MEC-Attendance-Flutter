@@ -120,7 +120,7 @@ class _AttendancePageState extends State<AttendancePage> {
               context, '/choose'); // return true if the route to be popped
         else
           // Navigator.pushReplacementNamed(context, '/attendance');
-        return true;
+          return true;
         return false;
       },
       child: MaterialApp(
@@ -180,8 +180,8 @@ class _AttendancePageState extends State<AttendancePage> {
               studname,
               style: TextStyle(fontSize: 19.0, fontFamily: fontName),
             ),
-            backgroundColorStart: gradientAppbarStart,
-            backgroundColorEnd: gradientAppbarEnd,
+            gradient: LinearGradient(
+                colors: [gradientAppbarStart, gradientAppbarEnd]),
           ),
 
           // Floating button pushes timetable page if time table has been loaded.
@@ -199,7 +199,7 @@ class _AttendancePageState extends State<AttendancePage> {
                         gradientAppbarEnd: gradientAppbarEnd,
                         gradientCircleStart: gradientTimetableCircleStart,
                         gradientCircleEnd: gradientTimetableCircleEnd,
-                        fontName:fontName),
+                        fontName: fontName),
                   ),
                 );
             },

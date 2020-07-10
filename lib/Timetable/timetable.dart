@@ -50,8 +50,8 @@ class _TimeTableState extends State<TimeTable>
       child: Scaffold(
         backgroundColor: Color(0xFFeeeeee),
         appBar: GradientAppBar(
-          backgroundColorStart: gradientAppbarStart,
-          backgroundColorEnd: gradientAppbarEnd,
+          gradient:
+              LinearGradient(colors: [gradientAppbarStart, gradientAppbarEnd]),
           bottom: TabBar(
             labelStyle: TextStyle(fontFamily: fontName),
             indicatorWeight: 3,
@@ -143,7 +143,7 @@ Widget schedule(
   for (int i = 0; i < ttcopy.length; i++) {
     listofperiods.add(
       FadeIn(
-        i / 6.0+.2,
+        i / 6.0 + .2,
         Container(
             margin: EdgeInsets.fromLTRB(10, 0, 15, 2),
             padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 3.0),
