@@ -154,8 +154,14 @@ Widget schedule({timetable, day}) {
                         gradient: LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.topRight,
-                            stops: [0.1, 0.9],
-                            colors: [gradientAppbarStart, gradientAppbarEnd]),
+                            stops: [
+                              0.1,
+                              0.9
+                            ],
+                            colors: [
+                              gradientTimetableCircleStart,
+                              gradientTimetableCircleEnd
+                            ]),
                       ),
                       child: Center(
                           child: Text((i + 1).toString(),
