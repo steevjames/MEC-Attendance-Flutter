@@ -3,14 +3,11 @@ import 'package:mec_attendance/Pages/Attendance/Widgets/customAppbar.dart';
 import 'package:mec_attendance/Pages/Attendance/Widgets/getData.dart';
 import 'Widgets/createList.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../Timetable/timetable.dart';
 import 'package:mec_attendance/Pages/Timetable/timetable.dart';
 import 'package:mec_attendance/Theme/theme.dart';
 import 'dart:convert';
 
 class AttendancePage extends StatefulWidget {
-  AttendancePage();
-
   @override
   _AttendancePageState createState() => _AttendancePageState();
 }
@@ -25,6 +22,23 @@ class _AttendancePageState extends State<AttendancePage> {
   List noOfClassesList;
   // Wether to go back on back button press
   bool goback = true;
+
+  // Content to be displayed on page
+  List<Widget> pageContent = [
+    Center(
+      child: Container(
+        margin: EdgeInsets.only(top: 110),
+        height: 60.0,
+        width: 60.0,
+        child: CircularProgressIndicator(
+          strokeWidth: 3,
+          valueColor: new AlwaysStoppedAnimation<Color>(
+            Colors.blue,
+          ),
+        ),
+      ),
+    )
+  ];
 
   // This function switches the title & back function after data recieved.
   updateAppbar() {
@@ -58,7 +72,7 @@ class _AttendancePageState extends State<AttendancePage> {
     }
 
     // Scrape data from website
-    var data = await FetchData().getData(updateAppbar);
+    var data = await FetchData().getData();
 
     setState(() {
       classname = data['classname'];
@@ -73,12 +87,15 @@ class _AttendancePageState extends State<AttendancePage> {
         pageContent = [
           Container(
             padding: EdgeInsets.all(20.0),
+            margin: EdgeInsets.only(top: 100),
             alignment: Alignment.center,
             child: Text('Data With Given Details Have Not Been Entered.'),
           )
         ];
         goback = true;
-      } else
+      }
+      // Displays fetched data
+      else
         pageContent = returnListOfAttendanceInfo(studentattendance,
             subjectAndLastUpdated, noOfSubjects, noOfClassesList, context);
     });
@@ -87,28 +104,6 @@ class _AttendancePageState extends State<AttendancePage> {
     updateAppbar();
   }
 
-  @override
-  void initState() {
-    fetchData();
-    super.initState();
-  }
-
-  // Content to be displayed on page
-  List<Widget> pageContent = [
-    Center(
-      child: SizedBox(
-        height: 60.0,
-        width: 60.0,
-        child: CircularProgressIndicator(
-          strokeWidth: 3,
-          valueColor: new AlwaysStoppedAnimation<Color>(
-            Colors.blue,
-          ),
-        ),
-      ),
-    )
-  ];
-
 // Controlling what happens when back button of appbar is pushed.
   onbackbutton() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -116,6 +111,12 @@ class _AttendancePageState extends State<AttendancePage> {
     pref.remove('timetable');
     pref.remove('rollno');
     Navigator.pushReplacementNamed(context, '/choose');
+  }
+
+  @override
+  void initState() {
+    fetchData();
+    super.initState();
   }
 
   @override

@@ -15,7 +15,7 @@ class FetchData {
   var studentattendance = [];
 
 // Fetch Data from the Site
-  getData(updateAttendanceInfo) async {
+  getData() async {
     print("Trying to get Data");
 
     // Data from storage
@@ -26,12 +26,11 @@ class FetchData {
     // print(timeTable);
     print('--- Got Data from Storage ---');
 
-    var response = await fetchDataFromNet(classname, updateAttendanceInfo);
+    var response = await fetchDataFromNet(classname);
     var soup = Beautifulsoup(response.body.toString());
     // Converts fetched Data.
     convertData(soup);
     // Replaces loading with attendance list.
-    updateAttendanceInfo();
     print('--- Got Data from Website ---');
 
     return {
@@ -46,7 +45,7 @@ class FetchData {
   }
 
   // Fetches data from net.
-  fetchDataFromNet(classname, updateAttendanceInfo) async {
+  fetchDataFromNet(classname) async {
     try {
       http.Response response = await http
           .get('http://attendance.mec.ac.in/view4stud.php?class=' + classname);
@@ -54,7 +53,7 @@ class FetchData {
       return response;
     } catch (_) {
       return await Future.delayed(const Duration(seconds: 2), () {
-        return fetchDataFromNet(classname, updateAttendanceInfo);
+        return fetchDataFromNet(classname);
       });
     }
   }

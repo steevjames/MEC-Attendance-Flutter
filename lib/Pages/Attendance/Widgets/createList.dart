@@ -134,7 +134,7 @@ returnListOfAttendanceInfo(studentattendance, subjectAndLastUpdated, length,
       );
     } // End of the popup element
 
-// Percentage Indicator
+    // Percentage Indicator
     Widget percentIndicator() {
       return Container(
         margin: EdgeInsets.fromLTRB(10, 5, 7, 5),
@@ -172,8 +172,8 @@ returnListOfAttendanceInfo(studentattendance, subjectAndLastUpdated, length,
       );
     } // End of Percentage Indicator
 
-// Each list Item starts here............
-// Change here to change how the details of subjects change.
+    // Each list Item starts here............
+    // Change here to change how the details of subjects change.
 
     widgetList.add(
       InkWell(
