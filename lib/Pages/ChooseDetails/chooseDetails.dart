@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mec_attendance/Pages/ChooseDetails/Widgets/selectClass.dart';
 import 'package:mec_attendance/Pages/ChooseDetails/Widgets/selectSemester.dart';
-import 'package:mec_attendance/Pages/ChooseDetails/classToString.dart';
+import 'package:mec_attendance/Pages/ChooseDetails/Widgets/classToString.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mec_attendance/Widgets/fadeIn.dart';
 import 'package:mec_attendance/Theme/theme.dart';
@@ -116,7 +116,10 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                           ),
                           FadeIn(
                             delay: .8,
-                            child: SelectClass(),
+                            child: SelectClass(
+                              radioValue: _radioValue,
+                              onRadio1Change: onRadio1Change,
+                            ),
                           ),
                           SizedBox(
                             height: 20.0,
@@ -130,7 +133,10 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                           ),
                           FadeIn(
                             delay: 1.3,
-                            child: SelectSemester(),
+                            child: SelectSemester(
+                              radioValue: _radioValue2,
+                              onRadio2Change: onRadio2Change,
+                            ),
                           ),
                           SizedBox(
                             height: 15.0,
