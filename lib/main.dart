@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mec_attendance/Pages/ChooseDetailsPage/chooseDetails.dart';
+import 'package:mec_attendance/Pages/ChooseDetails/chooseDetails.dart';
 import 'package:mec_attendance/Pages/Attendance/attendancepage.dart';
 import 'package:mec_attendance/Pages/Splashscreen/splashscreen.dart';
 

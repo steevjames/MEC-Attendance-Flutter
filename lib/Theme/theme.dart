@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // General
 
 String fontName = 'default';
+Color maincolor = Color(0xFF2680C1);
 
 // Splash screen
 
