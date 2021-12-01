@@ -136,6 +136,7 @@ class _AttendancePageState extends State<AttendancePage> {
           classname: classname,
           onbackbutton: onbackbutton,
           studname: studname,
+          context: context,
         ),
         // Floating button pushes timetable page if time table has been loaded.
         floatingActionButton: FloatingActionButton(

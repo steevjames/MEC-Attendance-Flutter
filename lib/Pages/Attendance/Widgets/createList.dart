@@ -69,7 +69,7 @@ returnListOfAttendanceInfo(studentattendance, subjectAndLastUpdated, length,
 
     // Takes last updated value, splits to day, month & year.
     // Takes device date & finds difference in number of days.
-    int luday, lumonth, luyear, difference = -1;
+    int luday, lumonth, luyear, difference = -999;
     try {
       luday = int.parse(lastupdated.substring(0, 2));
       lumonth = int.parse(lastupdated.substring(3, 5));

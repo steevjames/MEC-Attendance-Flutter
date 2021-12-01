@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:mec_attendance/Widgets/fadeIn.dart';
 import 'package:mec_attendance/Theme/theme.dart';
@@ -15,12 +17,18 @@ class Schedule extends StatelessWidget {
 
 // Checks for course code in name & removes it, Makes it title case
     for (int i = 0; i < ttcopy.length; i++) {
-      if (ttcopy[i].split(' ')[0].contains('0') ||
-          ttcopy[i].split(' ')[0].contains('1') ||
-          ttcopy[i].split(' ')[0].contains('2') ||
-          ttcopy[i].split(' ')[0].contains('3') ||
-          ttcopy[i].split(' ')[0].contains('4'))
-        ttcopy[i] = ttcopy[i].substring(ttcopy[i].indexOf(" ") + 1);
+      // if (ttcopy[i].split(' ')[0].contains('0') ||
+      //     ttcopy[i].split(' ')[0].contains('1') ||
+      //     ttcopy[i].split(' ')[0].contains('2') ||
+      //     ttcopy[i].split(' ')[0].contains('3') ||
+      //     ttcopy[i].split(' ')[0].contains('4'))
+      int lastNumIndex = 0;
+      for (int j = 0; j < ttcopy[i].length; j++) {
+        if (int.tryParse(ttcopy[i][j]) != null) lastNumIndex = j;
+      }
+
+      ttcopy[i] = ttcopy[i].substring(lastNumIndex + 1);
+      // ttcopy[i] = ttcopy[i].substring(ttcopy[i].indexOf(" ") + 1);
 
       try {
         ttcopy[i] = ttcopy[i]
