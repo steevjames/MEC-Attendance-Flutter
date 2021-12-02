@@ -45,14 +45,22 @@ returnListOfAttendanceInfo(studentattendance, subjectAndLastUpdated, length,
       attn = attendance.toString() + '%';
     // Getting Subject Name
     var subname = subjectAndLastUpdated[i][0].toString();
-    var subarray = subname.split(' ');
-    // If first word of subject name contains numbers, its propably the course code so removes it.
-    if (subarray[0].contains('0') ||
-        subarray[0].contains('1') ||
-        subarray[0].contains('2') ||
-        subarray[0].contains('3') ||
-        subarray[0].contains('4')) subarray.removeAt(0);
-    subname = subarray.join(' ');
+
+    int lastNumIndex = 0;
+    for (int j = 0; j < subname.length; j++) {
+      if (int.tryParse(subname[j]) != null) lastNumIndex = j;
+    }
+
+    subname = subname.substring(lastNumIndex + 1);
+
+    // var subarray = subname.split(' ');
+    // // If first word of subject name contains numbers, its propably the course code so removes it.
+    // if (subarray[0].contains('0') ||
+    //     subarray[0].contains('1') ||
+    //     subarray[0].contains('2') ||
+    //     subarray[0].contains('3') ||
+    //     subarray[0].contains('4')) subarray.removeAt(0);
+    // subname = subarray.join(' ');
 
     // Tries to convert student name to Lowercase.
     try {

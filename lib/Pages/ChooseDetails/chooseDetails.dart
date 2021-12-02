@@ -93,6 +93,7 @@ class _ChooseDetailsState extends State<ChooseDetails> {
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
+                    SizedBox(height: 30),
                     FadeIn(
                       delay: .3,
                       child: Image.asset(

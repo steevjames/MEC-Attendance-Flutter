@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:mec_attendance/Widgets/fadeIn.dart';
 import 'package:mec_attendance/Theme/theme.dart';

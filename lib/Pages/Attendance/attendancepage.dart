@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mec_attendance/Pages/Attendance/Widgets/customAppbar.dart';
 import 'package:mec_attendance/Pages/Attendance/Widgets/getData.dart';
@@ -146,7 +147,7 @@ class _AttendancePageState extends State<AttendancePage> {
             if (timeTable != null && timeTable.length != 0)
               Navigator.push(
                 context,
-                MaterialPageRoute(
+                CupertinoPageRoute(
                   builder: (context) => TimeTable(
                     timeTable: timeTable,
                     classname: classname,

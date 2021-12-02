@@ -13,7 +13,7 @@ dialogWithContent({@required context}) {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
-                "This app was developed using Flutter by Steev James of CSA 2021 batch. The app gets data from the college attendance website to and shows it to the user. Currently looking for someone to maintain the app. To contact me, use the link below",
+                "This app was developed using Flutter by Steev James of CSA 2021 batch. The app gets data from the college attendance website to and shows processed data to the user. Currently looking for someone to maintain the app. To contact the developer, use the link below",
                 style: TextStyle(
                   color: Colors.black54,
                   fontSize: 14,
@@ -21,11 +21,35 @@ dialogWithContent({@required context}) {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 15),
-              RaisedButton(
-                  child: Text("Contact"),
-                  onPressed: () {
-                    launch("https://wa.me/919539415481");
-                  })
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  RaisedButton(
+                      child: Text("Contact"),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                      color: Color(0xFF2c7ec4),
+                      visualDensity: VisualDensity.compact,
+                      textColor: Colors.white,
+                      onPressed: () {
+                        launch("https://wa.me/919539415481");
+                      }),
+                  SizedBox(width: 20),
+                  RaisedButton(
+                      child: Text("Source code"),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                      color: Color(0xFF2c7ec4),
+                      visualDensity: VisualDensity.compact,
+                      textColor: Colors.white,
+                      onPressed: () {
+                        launch(
+                            "https://github.com/steevjames/MEC-Attendance-Flutter");
+                      })
+                ],
+              )
             ],
           ),
         );
@@ -75,7 +99,7 @@ customAppbar({classname, onbackbutton, studname, context}) {
           PopupMenuItem(
             value: 3,
             child: Text(
-              'Rate',
+              'Find on Google Play',
               style: TextStyle(fontFamily: fontName, fontSize: 14),
             ),
           ),
